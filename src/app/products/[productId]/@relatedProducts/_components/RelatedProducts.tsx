@@ -1,4 +1,3 @@
-// RelatedProducts.tsx
 import { productService } from "@/services/ProductService";
 import { ChevronRight } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
@@ -8,8 +7,6 @@ import { RelatedProductsHeader } from "./RelatedProductsHeader";
 import { RelatedtCategoryList } from "./RelatedtCategoryList";
 
 const RelatedProducts = async ({ productId }: { productId: string }) => {
-  // Fonction isolée pour récupérer les produits associés
-  // Cette fonction peut être facilement mockée pour les tests
   async function getRelatedProductsData(
     id: string,
   ): Promise<Array<ProductModel>> {

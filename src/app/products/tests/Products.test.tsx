@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, test, vi } from "vitest";
 import { ProductModel } from "../../../types/product";
 import { Products } from "../_components/Products";
 
@@ -10,7 +10,6 @@ vi.mock("../_components/Product", () => ({
 }));
 
 describe("<Products />", () => {
-  // Données de test
   const mockProducts: ProductModel[] = [
     {
       id: 1,
@@ -35,7 +34,7 @@ describe("<Products />", () => {
     },
   ];
 
-  it("devrait rendre une grille avec les classes CSS appropriées", () => {
+  test("Devrait rendre une grille avec les classes CSS appropriées", () => {
     const { container } = render(<Products products={mockProducts} />);
 
     const grid = container.firstChild;
@@ -44,10 +43,9 @@ describe("<Products />", () => {
     );
   });
 
-  it("devrait rendre un composant Product pour chaque produit", () => {
+  test("Devrait rendre un composant Product pour chaque produit", () => {
     render(<Products products={mockProducts} />);
 
-    // Vérification que chaque produit est rendu via son data-testid
     mockProducts.forEach((product) => {
       const productElement = screen.getByTestId(`product-${product.id}`);
       expect(productElement).toBeInTheDocument();
@@ -55,16 +53,14 @@ describe("<Products />", () => {
     });
   });
 
-  it("devrait gérer le cas d'une liste vide de produits", () => {
+  test("Devrait gérer le cas d'une liste vide de produits", () => {
     const { container } = render(<Products products={[]} />);
 
-    // Vérification que la grille est vide
     const grid = container.firstChild;
     expect(grid?.childNodes.length).toBe(0);
   });
 
-  it("devrait gérer une grande quantité de produits", () => {
-    // Création d'une liste de nombreux produits
+  test("Devrait gérer une grande quantité de produits", () => {
     const manyProducts = Array.from({ length: 20 }, (_, index) => ({
       id: index + 1,
       title: `Product ${index + 1}`,
@@ -75,7 +71,6 @@ describe("<Products />", () => {
 
     render(<Products products={manyProducts} />);
 
-    // Vérification que tous les produits sont rendus
     manyProducts.forEach((product) => {
       const productElement = screen.getByTestId(`product-${product.id}`);
       expect(productElement).toBeInTheDocument();

@@ -1,14 +1,12 @@
 import { render, screen } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, test, vi } from "vitest";
 
-// Mock du composant page pour éviter les erreurs de composants asynchrones
 vi.mock("../page", () => ({
   default: () => (
     <div data-testid="mocked-product-info-page">Mocked Product Info Page</div>
   ),
 }));
 
-// Mock de React.Suspense
 vi.mock("react", () => {
   const React = vi.importActual("react");
   return {
@@ -28,7 +26,6 @@ vi.mock("react", () => {
   };
 });
 
-// Mock des composants enfants
 vi.mock("../_components/ProductInfo", () => ({
   default: ({ productId }: { productId: string }) => (
     <div data-testid="product-info-mock" data-product-id={productId}>
@@ -42,14 +39,12 @@ vi.mock("../_components/ProductInfoSkeleton", () => ({
 }));
 
 describe("ProductInfoPage Structure", () => {
-  it("devrait correctement structurer les composants", () => {
-    // Tester le skeleton de chargement
+  test("Devrait correctement structurer les composants", () => {
     const { rerender } = render(
       <div data-testid="skeleton-mock">Loading...</div>,
     );
     expect(screen.getByTestId("skeleton-mock")).toBeInTheDocument();
 
-    // Tester le composant ProductInfo avec un ID spécifique
     rerender(
       <div data-testid="product-info-mock" data-product-id="123">
         Product Info for ID: 123
@@ -60,7 +55,6 @@ describe("ProductInfoPage Structure", () => {
     expect(productInfo).toHaveAttribute("data-product-id", "123");
     expect(productInfo).toHaveTextContent("Product Info for ID: 123");
 
-    // Tester que le composant de page mocké fonctionne
     rerender(
       <div data-testid="mocked-product-info-page">
         Mocked Product Info Page
@@ -71,19 +65,16 @@ describe("ProductInfoPage Structure", () => {
 });
 
 describe("ProductInfoPage Props Handling", () => {
-  it("devrait passer l'ID de produit correctement au composant ProductInfo", () => {
-    // Créer un simple composant de test
+  test("Devrait passer l'ID de produit correctement au composant ProductInfo", () => {
     const TestProductInfo = ({ productId }: { productId: string }) => (
       <div data-testid="product-info-mock" data-product-id={productId}>
         Product Info for ID: {productId}
       </div>
     );
 
-    // Tester avec différents IDs
     const testId = "123";
     render(<TestProductInfo productId={testId} />);
 
-    // Vérifier que l'ID est correctement passé
     expect(screen.getByTestId("product-info-mock")).toHaveAttribute(
       "data-product-id",
       testId,
@@ -95,8 +86,7 @@ describe("ProductInfoPage Props Handling", () => {
 });
 
 describe("ProductInfoPage Parameter Handling", () => {
-  it("devrait extraire l'ID des paramètres correctement", async () => {
-    // Fonction qui reproduit la logique d'extraction des paramètres
+  test("Devrait extraire l'ID des paramètres correctement", async () => {
     async function extractProductId(
       params: Promise<{ productId: string }>,
     ): Promise<string> {
@@ -104,7 +94,6 @@ describe("ProductInfoPage Parameter Handling", () => {
       return productId;
     }
 
-    // Test avec plusieurs IDs différents
     const testCases = ["123", "abc-xyz", "product_99"];
 
     for (const testId of testCases) {
@@ -117,8 +106,7 @@ describe("ProductInfoPage Parameter Handling", () => {
 });
 
 describe("ProductInfoPage Component Integration", () => {
-  it("devrait intégrer Suspense avec le bon fallback et le bon contenu", () => {
-    // Simuler la structure du composant avec un Suspense mocké
+  test("Devrait intégrer Suspense avec le bon fallback et le bon contenu", () => {
     render(
       <div data-testid="suspense-mock">
         <div data-testid="fallback-content">
@@ -132,7 +120,6 @@ describe("ProductInfoPage Component Integration", () => {
       </div>,
     );
 
-    // Vérifier la structure complète
     expect(screen.getByTestId("suspense-mock")).toBeInTheDocument();
     expect(screen.getByTestId("fallback-content")).toBeInTheDocument();
     expect(screen.getByTestId("skeleton-mock")).toBeInTheDocument();

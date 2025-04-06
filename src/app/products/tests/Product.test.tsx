@@ -1,11 +1,10 @@
 import { render, screen, cleanup } from "@testing-library/react";
-import { describe, expect, it, vi, beforeAll, afterEach } from "vitest";
+import { describe, expect, test, vi, beforeAll, afterEach } from "vitest";
 import { Product } from "../_components/Product";
 import { productService } from "@/services/ProductService";
 import { ProductModel } from "@/types/product";
 import { ReactNode } from "react";
 
-// Types pour les props des composants mockés
 type CommonProps = {
   children: ReactNode;
   className?: string;
@@ -30,10 +29,8 @@ type BadgeProps = CommonProps & {
   "data-variant"?: string;
 };
 
-// Mock des dépendances externes
 vi.mock("next/image", () => ({
   default: ({ src, alt, width, height, className }: ImageProps) => (
-    // eslint-disable-next-line @next/next/no-img-element
     <img
       src={src}
       alt={alt}
@@ -84,7 +81,6 @@ vi.mock("@/components/ui/badge", () => ({
   ),
 }));
 
-// Typage explicite pour les fonctions mockées du service
 type MockProductService = {
   getProducts: ReturnType<typeof vi.fn>;
   getProductById: ReturnType<typeof vi.fn>;
@@ -98,7 +94,6 @@ vi.mock("@/services/ProductService", () => ({
 }));
 
 describe("<ProductCard />", () => {
-  // Produit de test avec toutes les propriétés nécessaires
   const mockProduct: ProductModel = {
     id: 1,
     title: "iPhone 13",
@@ -113,7 +108,6 @@ describe("<ProductCard />", () => {
     images: [],
   };
 
-  // Configuration des mocks avant tous les tests
   beforeAll(() => {
     (
       productService.getProductById as ReturnType<typeof vi.fn>
@@ -127,35 +121,30 @@ describe("<ProductCard />", () => {
     });
   });
 
-  // Nettoyage après chaque test pour éviter les effets de bord
   afterEach(() => {
     cleanup();
   });
 
-  // Test de base : vérifier que le composant se rend correctement
-  it("devrait se rendre correctement dans le DOM", () => {
+  test("Devrait se rendre correctement dans le DOM", () => {
     render(<Product product={mockProduct} />);
     expect(screen.getByTestId("product-card")).toBeInTheDocument();
   });
 
-  // Test de structure : vérifier les composants principaux
-  it("devrait contenir les composants Card, CardHeader et CardContent", () => {
+  test("Devrait contenir les composants Card, CardHeader et CardContent", () => {
     render(<Product product={mockProduct} />);
     expect(screen.getByTestId("card")).toBeInTheDocument();
     expect(screen.getByTestId("card-header")).toBeInTheDocument();
     expect(screen.getByTestId("card-content")).toBeInTheDocument();
   });
 
-  // Test de style : vérifier les classes CSS du lien principal
-  it("devrait avoir les classes CSS appropriées sur le lien principal", () => {
+  test("Devrait avoir les classes CSS appropriées sur le lien principal", () => {
     render(<Product product={mockProduct} />);
     expect(screen.getByTestId("product-card")).toHaveClass(
       "block h-full no-underline",
     );
   });
 
-  // Test de navigation : vérifier l'URL de redirection
-  it("devrait rediriger vers la page détaillée du produit avec l'ID correct", () => {
+  test("Devrait rediriger vers la page détaillée du produit avec l'ID correct", () => {
     render(<Product product={mockProduct} />);
     expect(screen.getByTestId("product-card")).toHaveAttribute(
       "href",
@@ -163,22 +152,18 @@ describe("<ProductCard />", () => {
     );
   });
 
-  // Test de contenu : vérifier le titre du produit
-  it("devrait afficher le titre du produit", () => {
+  test("Devrait afficher le titre du produit", () => {
     render(<Product product={mockProduct} />);
 
     const title = screen.getByText(mockProduct.title);
     expect(title).toBeInTheDocument();
 
-    // Vérification que le titre est dans un CardTitle avec la classe truncate
     const cardTitle = screen.getByTestId("card-title");
     expect(cardTitle).toHaveClass("text-sm font-medium truncate");
     expect(cardTitle).toHaveTextContent(mockProduct.title);
   });
 
-  // Test conditionnel : vérifier l'absence de notation quand rating est absent/nul
-  it("devrait ne pas afficher la note si elle n'existe pas", () => {
-    // Création d'un produit sans notation
+  test("Ne devrait pas afficher la note si elle n'existe pas", () => {
     const productWithoutRating = { ...mockProduct, rating: 0 };
     render(<Product product={productWithoutRating} />);
     const rating = screen.queryByText(/★/);
@@ -186,36 +171,28 @@ describe("<ProductCard />", () => {
     expect(screen.queryByTestId("badge")).not.toBeInTheDocument();
   });
 
-  // Test conditionnel : vérifier la présence de notation quand rating existe
-  it("devrait afficher la note si elle existe", () => {
+  test("Devrait afficher la note si elle existe", () => {
     render(<Product product={mockProduct} />);
 
-    // Vérification que la notation est affichée avec le bon format
     const rating = screen.getByText(`★ ${mockProduct.rating.toFixed(1)}`);
     expect(rating).toBeInTheDocument();
 
-    // Vérification que la notation est dans un Badge avec les bonnes classes
     const badge = screen.getByTestId("badge");
     expect(badge).toHaveAttribute("data-variant", "outline");
     expect(badge).toHaveClass("text-xs scale-90");
   });
 
-  // Test conditionnel : vérifier l'absence d'image quand thumbnail est absent
-  it("devrait ne pas afficher l'image miniature si elle n'existe pas", () => {
-    // Création d'un produit sans image
+  test("Ne devrait pas afficher l'image miniature si elle n'existe pas", () => {
     const productWithoutThumbnail = { ...mockProduct, thumbnail: "" };
     render(<Product product={productWithoutThumbnail} />);
 
-    // Vérification que l'image n'est pas affichée
     const thumbnail = screen.queryByTestId("next-image");
     expect(thumbnail).not.toBeInTheDocument();
   });
 
-  // Test conditionnel : vérifier la présence d'image quand thumbnail existe
-  it("devrait afficher l'image miniature si elle existe", () => {
+  test("Devrait afficher l'image miniature si elle existe", () => {
     render(<Product product={mockProduct} />);
 
-    // Vérification que l'image est affichée avec les bons attributs
     const thumbnail = screen.getByTestId("next-image");
     expect(thumbnail).toBeInTheDocument();
     expect(thumbnail).toHaveAttribute("src", mockProduct.thumbnail);
@@ -225,12 +202,9 @@ describe("<ProductCard />", () => {
     expect(thumbnail).toHaveClass("object-cover w-full h-full");
   });
 
-  // Test de contenu : vérifier le conteneur de l'image
-  it("devrait avoir un conteneur d'image correctement stylisé", () => {
+  test("Devrait avoir un conteneur d'image correctement stylisé", () => {
     render(<Product product={mockProduct} />);
 
-    // Vérification que le conteneur de l'image a les bonnes classes
-    // Note: La structure DOM exacte pourrait varier, cet exemple est une approximation
     const image = screen.getByTestId("next-image");
     const imageContainer = image.parentElement;
     expect(imageContainer).toHaveClass(
@@ -238,55 +212,42 @@ describe("<ProductCard />", () => {
     );
   });
 
-  // Test de contenu : vérifier la description du produit
-  it("devrait afficher la description du produit avec troncature", () => {
+  test("Devrait afficher la description du produit avec troncature", () => {
     render(<Product product={mockProduct} />);
 
-    // Vérification que la description est affichée
     const description = screen.getByText(mockProduct.description);
     expect(description).toBeInTheDocument();
 
-    // Vérification que la description a les bonnes classes pour la troncature
     expect(description).toHaveClass("text-xs text-gray-700 line-clamp-2");
   });
 
-  // Test de contenu : vérifier l'affichage du prix
-  it("devrait afficher le prix du produit correctement formaté", () => {
+  test("Devrait afficher le prix du produit correctement formaté", () => {
     render(<Product product={mockProduct} />);
 
-    // Vérification que le prix est affiché avec le format correct
     const price = screen.getByText(`$${mockProduct.price.toFixed(2)}`);
     expect(price).toBeInTheDocument();
 
-    // Vérification que le conteneur du prix a les bonnes classes
     expect(price).toHaveClass("font-medium mt-2");
   });
 
-  // Test conditionnel : vérifier la présence du pourcentage de réduction
-  it("devrait afficher le pourcentage de réduction si celui-ci existe", () => {
+  test("Devrait afficher le pourcentage de réduction si celui-ci existe", () => {
     render(<Product product={mockProduct} />);
 
-    // Vérification que la réduction est affichée avec le format correct
     const discount = screen.getByText(
       `-${mockProduct.discountPercentage!.toFixed(0)}%`,
     );
     expect(discount).toBeInTheDocument();
 
-    // Vérification que la réduction a les bonnes classes
     expect(discount).toHaveClass("ml-1 text-xs text-green-600");
   });
 
-  // Test conditionnel : vérifier l'absence du pourcentage de réduction
-  it("devrait ne pas afficher le pourcentage de réduction s'il n'existe pas", () => {
-    // Test avec une valeur de réduction à 0
+  test("Ne devrait pas afficher le pourcentage de réduction s'il n'existe pas", () => {
     const productWithoutDiscount = { ...mockProduct, discountPercentage: 0 };
     render(<Product product={productWithoutDiscount} />);
 
-    // Vérification qu'aucune réduction n'est affichée
     const discount = screen.queryByText(/-0%/);
     expect(discount).not.toBeInTheDocument();
 
-    // Test avec réduction undefined (après nettoyage)
     cleanup();
     const productWithUndefinedDiscount: ProductModel = {
       ...mockProduct,
@@ -294,43 +255,34 @@ describe("<ProductCard />", () => {
     };
     render(<Product product={productWithUndefinedDiscount} />);
 
-    // Vérification qu'aucune réduction n'est affichée
     const undefinedDiscount = screen.queryByText(/-\d+%/);
     expect(undefinedDiscount).not.toBeInTheDocument();
   });
 
-  // Test de style : vérifier les classes CSS de la Card
-  it("devrait avoir les bonnes classes CSS sur le composant Card", () => {
+  test("Devrait avoir les bonnes classes CSS sur le composant Card", () => {
     render(<Product product={mockProduct} />);
 
-    // Vérification des classes CSS sur la Card
     const card = screen.getByTestId("card");
     expect(card).toHaveClass(
       "h-full flex flex-col shadow-md hover:shadow-lg transition-all duration-200",
     );
   });
 
-  // Test de style : vérifier les classes CSS du CardHeader
-  it("devrait avoir les bonnes classes CSS sur le CardHeader", () => {
+  test("Devrait avoir les bonnes classes CSS sur le CardHeader", () => {
     render(<Product product={mockProduct} />);
 
-    // Vérification des classes CSS sur le CardHeader
     const header = screen.getByTestId("card-header");
     expect(header).toHaveClass("pb-1 pt-3 px-3");
   });
 
-  // Test de style : vérifier les classes CSS du CardContent
-  it("devrait avoir les bonnes classes CSS sur le CardContent", () => {
+  test("Devrait avoir les bonnes classes CSS sur le CardContent", () => {
     render(<Product product={mockProduct} />);
 
-    // Vérification des classes CSS sur le CardContent
     const content = screen.getByTestId("card-content");
     expect(content).toHaveClass("py-2 px-3");
   });
 
-  // Test avec données extrêmes : titre très long
-  it("devrait gérer correctement un titre très long avec troncature", () => {
-    // Produit avec un titre extrêmement long
+  test("Devrait gérer correctement un titre très long avec troncature", () => {
     const productWithLongTitle: ProductModel = {
       ...mockProduct,
       title:
@@ -341,15 +293,12 @@ describe("<ProductCard />", () => {
 
     render(<Product product={productWithLongTitle} />);
 
-    // Vérification que le titre est présent et tronqué
     const title = screen.getByTestId("card-title");
     expect(title).toHaveClass("truncate");
     expect(title).toHaveTextContent(productWithLongTitle.title);
   });
 
-  // Test avec données extrêmes : description très longue
-  it("devrait gérer correctement une description très longue avec troncature", () => {
-    // Produit avec une description extrêmement longue
+  test("Devrait gérer correctement une description très longue avec troncature", () => {
     const productWithLongDescription: ProductModel = {
       ...mockProduct,
       description:
@@ -360,7 +309,6 @@ describe("<ProductCard />", () => {
 
     render(<Product product={productWithLongDescription} />);
 
-    // Vérification que la description est présente et tronquée
     const description = screen.getByText(
       /This is an extremely long product description/,
     );
