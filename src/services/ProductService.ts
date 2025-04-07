@@ -1,4 +1,4 @@
-import { CategoriesResponse, ProductModel, ProductSchema, ProductsResponse, ProductsResponseSchema } from "@/types/product";
+import { CategoriesResponse, CategoriesResponseSchema, CategoryModel, ProductModel, ProductSchema, ProductsResponse, ProductsResponseSchema } from "@/types/product";
 import { BaseService } from "./BaseService";
 
 class ProductService extends BaseService {
@@ -6,26 +6,30 @@ class ProductService extends BaseService {
       super("https://dummyjson.com");
    }
 
-   private async delay(ms: number): Promise<void> {
+   private async delay(ms: number = 1500): Promise<void> {
       return new Promise(resolve => setTimeout(resolve, ms));
    }
 
-   async getProducts(): Promise<ProductsResponse> {
+   async getProducts(page: number = 1, limit: number = 8): Promise<ProductsResponse> {
       try {
-         const data = await this.get<unknown>("/products");
-         return ProductsResponseSchema.parse(data);
+         await this.delay();
 
+         const skip = (page - 1) * limit;
+         const data = await this.get<ProductModel[]>(`/products?limit=${limit}&skip=${skip}`);
+         return ProductsResponseSchema.parse(data);
       } catch (error) {
          if (error instanceof Error) {
-            throw new Error(`Failed to fetch products: ${error.message}`);
+            throw new Error(`Failed to fetch paginated products: ${error.message}`);
          }
-         throw new Error("An unknown error occurred while fetching products");
+         throw new Error("An unknown error occurred while fetching paginated products");
       }
    }
 
    async getProductById(id: number | string): Promise<ProductModel> {
       try {
-         const data = await this.get<unknown>(`/products/${id}`);
+         await this.delay();
+
+         const data = await this.get<ProductModel>(`/products/${id}`);
          return ProductSchema.parse(data);
       } catch (error) {
          if (error instanceof Error) {
@@ -35,9 +39,12 @@ class ProductService extends BaseService {
       }
    }
 
-   async getProductsByCategory(category: string): Promise<ProductsResponse> {
+   async getProductsByCategory(category: string, page: number = 1, limit: number = 8): Promise<ProductsResponse> {
       try {
-         const data = await this.get<ProductsResponse>(`/products/category/${encodeURIComponent(category)}`);
+         await this.delay();
+
+         const skip = (page - 1) * limit;
+         const data = await this.get<ProductModel[]>(`/products/category/${encodeURIComponent(category)}?limit=${limit}&skip=${skip}`);
          return ProductsResponseSchema.parse(data);
       } catch (error) {
          if (error instanceof Error) {
@@ -49,8 +56,10 @@ class ProductService extends BaseService {
 
    async getCategories(): Promise<CategoriesResponse> {
       try {
-         const data = await this.get<CategoriesResponse>("/products/categories");
-         return data;
+         await this.delay();
+
+         const data = await this.get<CategoryModel[]>("/products/categories");
+         return CategoriesResponseSchema.parse(data);
       } catch (error) {
          if (error instanceof Error) {
             throw new Error(`Failed to fetch categories: ${error.message}`);

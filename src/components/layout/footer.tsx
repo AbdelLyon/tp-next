@@ -226,7 +226,7 @@ export const Footer = () => {
         </div>
         <div className="mt-12 border-t pt-8">
           <p className="text-xs text-muted-foreground">
-            © {new Date().getFullYear()} ShopApp. All rights reserved.
+            © 2025 ShopApp. All rights reserved.
           </p>
         </div>
       </div>

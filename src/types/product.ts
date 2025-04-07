@@ -29,11 +29,9 @@ export type ProductsResponse = z.infer<typeof ProductsResponseSchema>;
 
 // Version plus riche pour une future évolution
 export const CategorySchema = z.object({
-   id: z.string(),
+   slug: z.string(),
    name: z.string(),
-   description: z.string().optional(),
-   image: z.string().optional(),
-   parentCategory: z.string().optional(),
+   url: z.string().url()
 });
 
 export type CategoryModel = z.infer<typeof CategorySchema>;

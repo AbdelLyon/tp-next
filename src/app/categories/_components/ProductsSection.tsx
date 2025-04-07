@@ -20,8 +20,8 @@ const ProductsSection = async ({
         </p>
       </div>
       <Products
-        products={products}
-        className="md:grid-cols-2 lg:grid-cols-3 gap-4 max-h-full overflow-y-auto"
+        initialProducts={products}
+        className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 max-h-full overflow-y-auto"
       />
     </>
   );

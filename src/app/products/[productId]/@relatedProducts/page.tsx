@@ -7,6 +7,7 @@ const RelatedProductsPage = async ({
 }: {
   params: Promise<{ productId: string }>;
 }) => {
+  // "use cache";
   const { productId } = await params;
   return (
     <Suspense fallback={<ProductInfoSkeleton />}>

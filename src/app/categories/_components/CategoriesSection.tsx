@@ -10,7 +10,6 @@ export const CategoriesSection = ({
   categories,
   category,
 }: CategoriesProps) => {
-  console.log("CategoriesSection", category);
   return (
     <div className="rounded-lg border bg-card p-4">
       <h2 className="text-lg font-semibold mb-3">Filtrer par catégorie</h2>

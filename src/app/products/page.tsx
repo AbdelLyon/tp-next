@@ -1,15 +1,16 @@
 import { Suspense } from "react";
 import { productService } from "@/services/ProductService";
-import { Products } from "./_components/Products";
 import { PageContainer } from "@/components/shared/PageContainer";
 import { ProductsSkeleton } from "./_components/ProductSkeleton";
+import { Products } from "./_components/Products";
 
-// Créez un composant de contenu séparé
 async function ProductsContent() {
+  // "use cache";
   const data = await productService.getProducts();
+
   return (
     <Products
-      products={data.products}
+      initialProducts={data.products}
       className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
     />
   );
