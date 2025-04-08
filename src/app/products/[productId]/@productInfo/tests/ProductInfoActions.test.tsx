@@ -1,9 +1,9 @@
 import { render, screen } from "@testing-library/react";
-import { describe, expect, test } from "vitest";
+import { describe, expect, it } from "vitest";
 import { RelatedProductsHeader } from "../../@relatedProducts/_components/RelatedProductsHeader";
 
 describe("<RelatedProductsHeader />", () => {
-  test("Devrait rendre le composant avec le titre", () => {
+  it("Devrait rendre le composant avec le titre", () => {
     render(<RelatedProductsHeader title="Related Products" />);
 
     expect(screen.getByTestId("section-header")).toBeInTheDocument();
@@ -13,13 +13,13 @@ describe("<RelatedProductsHeader />", () => {
     );
   });
 
-  test("Ne devrait pas rendre le lien d'action quand actionLink et actionText ne sont pas fournis", () => {
+  it("Ne devrait pas rendre le lien d'action quand actionLink et actionText ne sont pas fournis", () => {
     render(<RelatedProductsHeader title="Related Products" />);
 
     expect(screen.queryByTestId("section-action-link")).not.toBeInTheDocument();
   });
 
-  test("Devrait rendre le lien d'action quand actionLink et actionText sont fournis", () => {
+  it("Devrait rendre le lien d'action quand actionLink et actionText sont fournis", () => {
     render(
       <RelatedProductsHeader
         title="Related Products"
@@ -37,7 +37,7 @@ describe("<RelatedProductsHeader />", () => {
     expect(actionLink).toHaveAttribute("href", "/products");
   });
 
-  test("Devrait rendre l'icône quand une icône est fournie", () => {
+  it("Devrait rendre l'icône quand une icône est fournie", () => {
     render(
       <RelatedProductsHeader
         title="Related Products"
@@ -50,7 +50,7 @@ describe("<RelatedProductsHeader />", () => {
     expect(screen.getByTestId("test-icon")).toBeInTheDocument();
   });
 
-  test("Ne devrait pas rendre le lien d'action quand seulement actionLink est fourni", () => {
+  it("Ne devrait pas rendre le lien d'action quand seulement actionLink est fourni", () => {
     render(
       <RelatedProductsHeader title="Related Products" actionLink="/products" />,
     );
@@ -58,7 +58,7 @@ describe("<RelatedProductsHeader />", () => {
     expect(screen.queryByTestId("section-action-link")).not.toBeInTheDocument();
   });
 
-  test("Ne devrait pas rendre le lien d'action quand seulement actionText est fourni", () => {
+  it("Ne devrait pas rendre le lien d'action quand seulement actionText est fourni", () => {
     render(
       <RelatedProductsHeader title="Related Products" actionText="View All" />,
     );
@@ -66,7 +66,7 @@ describe("<RelatedProductsHeader />", () => {
     expect(screen.queryByTestId("section-action-link")).not.toBeInTheDocument();
   });
 
-  test("Devrait avoir les classes CSS correctes", () => {
+  it("Devrait avoir les classes CSS correctes", () => {
     render(
       <RelatedProductsHeader
         title="Related Products"
@@ -90,7 +90,7 @@ describe("<RelatedProductsHeader />", () => {
     );
   });
 
-  test("Devrait gérer correctement un titre long", () => {
+  it("Devrait gérer correctement un titre long", () => {
     const longTitle =
       "This is a very long title that should still render correctly".repeat(3);
 
@@ -99,7 +99,7 @@ describe("<RelatedProductsHeader />", () => {
     expect(screen.getByTestId("section-title")).toHaveTextContent(longTitle);
   });
 
-  test("Ne devrait pas rendre le lien d'action quand actionLink est une chaîne vide", () => {
+  it("Ne devrait pas rendre le lien d'action quand actionLink est une chaîne vide", () => {
     render(
       <RelatedProductsHeader
         title="Related Products"
@@ -111,7 +111,7 @@ describe("<RelatedProductsHeader />", () => {
     expect(screen.queryByTestId("section-action-link")).not.toBeInTheDocument();
   });
 
-  test("Ne devrait pas rendre le lien d'action quand actionText est une chaîne vide", () => {
+  it("Ne devrait pas rendre le lien d'action quand actionText est une chaîne vide", () => {
     render(
       <RelatedProductsHeader
         title="Related Products"

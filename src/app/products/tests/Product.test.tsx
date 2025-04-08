@@ -31,6 +31,7 @@ type BadgeProps = CommonProps & {
 
 vi.mock("next/image", () => ({
   default: ({ src, alt, width, height, className }: ImageProps) => (
+    // eslint-disable-next-line @next/next/no-img-element
     <img
       src={src}
       alt={alt}

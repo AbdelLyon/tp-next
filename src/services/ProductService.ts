@@ -6,13 +6,9 @@ class ProductService extends BaseService {
       super("https://dummyjson.com");
    }
 
-   private async delay(ms: number = 1500): Promise<void> {
-      return new Promise(resolve => setTimeout(resolve, ms));
-   }
 
    async getProducts(page: number = 1, limit: number = 8): Promise<ProductsResponse> {
       try {
-         await this.delay();
 
          const skip = (page - 1) * limit;
          const data = await this.get<ProductModel[]>(`/products?limit=${limit}&skip=${skip}`);
@@ -27,7 +23,6 @@ class ProductService extends BaseService {
 
    async getProductById(id: number | string): Promise<ProductModel> {
       try {
-         await this.delay();
 
          const data = await this.get<ProductModel>(`/products/${id}`);
          return ProductSchema.parse(data);
@@ -41,7 +36,6 @@ class ProductService extends BaseService {
 
    async getProductsByCategory(category: string, page: number = 1, limit: number = 8): Promise<ProductsResponse> {
       try {
-         await this.delay();
 
          const skip = (page - 1) * limit;
          const data = await this.get<ProductModel[]>(`/products/category/${encodeURIComponent(category)}?limit=${limit}&skip=${skip}`);
@@ -56,7 +50,6 @@ class ProductService extends BaseService {
 
    async getCategories(): Promise<CategoriesResponse> {
       try {
-         await this.delay();
 
          const data = await this.get<CategoryModel[]>("/products/categories");
          return CategoriesResponseSchema.parse(data);

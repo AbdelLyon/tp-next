@@ -1,27 +1,24 @@
-import { Suspense } from "react";
-import { productService } from "@/services/ProductService";
 import { PageContainer } from "@/components/shared/PageContainer";
 import { ProductsSkeleton } from "./_components/ProductSkeleton";
 import { Products } from "./_components/Products";
-
-async function ProductsContent() {
-  // "use cache";
-  const data = await productService.getProducts();
-
-  return (
-    <Products
-      initialProducts={data.products}
-      className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
-    />
-  );
-}
+import { productService } from "@/services/ProductService";
+import { ServerQueryProvider } from "@/providers/ServerQueryProvider";
+import { ProductsResponse } from "@/types/product";
 
 export default function ProductsPage() {
   return (
     <PageContainer>
-      <Suspense fallback={<ProductsSkeleton />}>
-        <ProductsContent />
-      </Suspense>
+      <ServerQueryProvider<ProductsResponse>
+        queryKey={["products"]}
+        queryFn={({ pageParam = 1 }) =>
+          productService.getProducts(pageParam, 8)
+        }
+        initialPageParam={1}
+        isInfinite={true}
+        fallback={<ProductsSkeleton />}
+      >
+        <Products className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" />
+      </ServerQueryProvider>
     </PageContainer>
   );
 }
