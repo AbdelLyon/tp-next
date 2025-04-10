@@ -1,13 +1,16 @@
-import { cn } from "@/lib/utils"
+import { mergeTailwindClasses } from "x-react/utils";
 
 function Skeleton({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="skeleton"
-      className={cn("bg-accent animate-pulse rounded-md", className)}
+      className={mergeTailwindClasses(
+        "bg-accent animate-pulse rounded-md",
+        className,
+      )}
       {...props}
     />
-  )
+  );
 }
 
-export { Skeleton }
+export { Skeleton };

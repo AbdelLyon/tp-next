@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export const Footer = () => {
   return (
-    <footer className="border-t bg-gray-50 mt-10">
+    <footer className="border border-t bg-content2 border-default-200 mt-10">
       <div className="container py-12 md:py-16 mx-auto">
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
           <div>
@@ -23,15 +23,12 @@ export const Footer = () => {
               </svg>
               <span className="font-bold">ShopApp</span>
             </div>
-            <p className="mt-4 text-sm text-muted-foreground max-w-xs">
+            <p className="mt-4 text-sm text-muted max-opacity-80">
               Your one-stop shop for quality products with affordable prices and
               excellent service.
             </p>
             <div className="mt-6 flex space-x-4">
-              <a
-                href="#"
-                className="text-muted-foreground hover:text-foreground"
-              >
+              <a href="#" className="text-muted hover:opacity-80">
                 <svg
                   className="h-5 w-5"
                   fill="currentColor"
@@ -45,10 +42,7 @@ export const Footer = () => {
                   />
                 </svg>
               </a>
-              <a
-                href="#"
-                className="text-muted-foreground hover:text-foreground"
-              >
+              <a href="#" className="text-muted hover:opacity-80">
                 <svg
                   className="h-5 w-5"
                   fill="currentColor"
@@ -62,10 +56,7 @@ export const Footer = () => {
                   />
                 </svg>
               </a>
-              <a
-                href="#"
-                className="text-muted-foreground hover:text-foreground"
-              >
+              <a href="#" className="text-muted hover:opacity-80">
                 <svg
                   className="h-5 w-5"
                   fill="currentColor"
@@ -85,7 +76,7 @@ export const Footer = () => {
                   <li>
                     <Link
                       href="/products"
-                      className="text-sm text-muted-foreground hover:text-foreground"
+                      className="text-sm text-muted hover:opacity-80"
                     >
                       All Products
                     </Link>
@@ -93,7 +84,7 @@ export const Footer = () => {
                   <li>
                     <Link
                       href="/categories"
-                      className="text-sm text-muted-foreground hover:text-foreground"
+                      className="text-sm text-muted hover:opacity-80"
                     >
                       Categories
                     </Link>
@@ -101,7 +92,7 @@ export const Footer = () => {
                   <li>
                     <Link
                       href="/brands"
-                      className="text-sm text-muted-foreground hover:text-foreground"
+                      className="text-sm text-muted hover:opacity-80"
                     >
                       Brands
                     </Link>
@@ -109,7 +100,7 @@ export const Footer = () => {
                   <li>
                     <Link
                       href="/deals"
-                      className="text-sm text-muted-foreground hover:text-foreground"
+                      className="text-sm text-muted hover:opacity-80"
                     >
                       Deals & Discounts
                     </Link>
@@ -122,7 +113,7 @@ export const Footer = () => {
                   <li>
                     <Link
                       href="/contact"
-                      className="text-sm text-muted-foreground hover:text-foreground"
+                      className="text-sm text-muted hover:opacity-80"
                     >
                       Contact Us
                     </Link>
@@ -130,7 +121,7 @@ export const Footer = () => {
                   <li>
                     <Link
                       href="/faq"
-                      className="text-sm text-muted-foreground hover:text-foreground"
+                      className="text-sm text-muted hover:opacity-80"
                     >
                       FAQs
                     </Link>
@@ -138,7 +129,7 @@ export const Footer = () => {
                   <li>
                     <Link
                       href="/shipping"
-                      className="text-sm text-muted-foreground hover:text-foreground"
+                      className="text-sm text-muted hover:opacity-80"
                     >
                       Shipping Information
                     </Link>
@@ -146,7 +137,7 @@ export const Footer = () => {
                   <li>
                     <Link
                       href="/returns"
-                      className="text-sm text-muted-foreground hover:text-foreground"
+                      className="text-sm text-muted hover:opacity-80"
                     >
                       Returns & Exchanges
                     </Link>
@@ -161,7 +152,7 @@ export const Footer = () => {
                   <li>
                     <Link
                       href="/about"
-                      className="text-sm text-muted-foreground hover:text-foreground"
+                      className="text-sm text-muted hover:opacity-80"
                     >
                       About Us
                     </Link>
@@ -169,7 +160,7 @@ export const Footer = () => {
                   <li>
                     <Link
                       href="/blog"
-                      className="text-sm text-muted-foreground hover:text-foreground"
+                      className="text-sm text-muted hover:opacity-80"
                     >
                       Blog
                     </Link>
@@ -177,7 +168,7 @@ export const Footer = () => {
                   <li>
                     <Link
                       href="/careers"
-                      className="text-sm text-muted-foreground hover:text-foreground"
+                      className="text-sm text-muted hover:opacity-80"
                     >
                       Careers
                     </Link>
@@ -185,7 +176,7 @@ export const Footer = () => {
                   <li>
                     <Link
                       href="/press"
-                      className="text-sm text-muted-foreground hover:text-foreground"
+                      className="text-sm text-muted hover:opacity-80"
                     >
                       Press
                     </Link>
@@ -198,7 +189,7 @@ export const Footer = () => {
                   <li>
                     <Link
                       href="/privacy"
-                      className="text-sm text-muted-foreground hover:text-foreground"
+                      className="text-sm text-muted hover:opacity-80"
                     >
                       Privacy Policy
                     </Link>
@@ -206,7 +197,7 @@ export const Footer = () => {
                   <li>
                     <Link
                       href="/terms"
-                      className="text-sm text-muted-foreground hover:text-foreground"
+                      className="text-sm text-muted hover:opacity-80"
                     >
                       Terms of Service
                     </Link>
@@ -214,7 +205,7 @@ export const Footer = () => {
                   <li>
                     <Link
                       href="/cookies"
-                      className="text-sm text-muted-foreground hover:text-foreground"
+                      className="text-sm text-muted hover:opacity-80"
                     >
                       Cookie Policy
                     </Link>
@@ -225,7 +216,7 @@ export const Footer = () => {
           </div>
         </div>
         <div className="mt-12 border-t pt-8">
-          <p className="text-xs text-muted-foreground">
+          <p className="text-xs text-muted">
             © 2025 ShopApp. All rights reserved.
           </p>
         </div>

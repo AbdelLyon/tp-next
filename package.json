@@ -12,6 +12,7 @@
     "test:c": "vitest run --coverage"
   },
   "dependencies": {
+    "@heroui/theme": "^2.4.13",
     "@radix-ui/react-avatar": "^1.1.3",
     "@radix-ui/react-scroll-area": "^1.2.3",
     "@radix-ui/react-separator": "^1.1.2",
@@ -23,16 +24,18 @@
     "clsx": "^2.1.1",
     "lucide-react": "^0.487.0",
     "next": "15.3.0-canary.38",
+    "postcss": "^8.5.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-intersection-observer": "^9.16.0",
     "tailwind-merge": "^3.1.0",
     "tw-animate-css": "^1.2.5",
+    "x-react": "github:AbdelLyon/x-react",
     "zod": "^3.24.2"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
-    "@tailwindcss/postcss": "^4",
+    "@tailwindcss/postcss": "^4.1.3",
     "@tanstack/eslint-plugin-query": "^5.72.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
@@ -46,7 +49,7 @@
     "eslint-config-next": "15.2.4",
     "happy-dom": "^17.4.4",
     "jsdom": "^26.0.0",
-    "tailwindcss": "^4",
+    "tailwindcss": "^4.1.3",
     "typescript": "^5",
     "vitest": "^3.1.1"
   }

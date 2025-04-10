@@ -1,6 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import { Star, Check } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { mergeTailwindClasses } from "x-react/utils";
 
 interface ProductInfoHeaderProps {
   brand?: string;
@@ -43,7 +43,7 @@ export const ProductInfoHeader = ({
               return (
                 <Star
                   key={i}
-                  className={cn(
+                  className={mergeTailwindClasses(
                     "h-4 w-4",
                     difference >= 1
                       ? "text-amber-400 fill-amber-400"
@@ -63,7 +63,7 @@ export const ProductInfoHeader = ({
         {stockLevel && (
           <Badge
             variant={stockLevel === "out" ? "destructive" : "outline"}
-            className={cn(
+            className={mergeTailwindClasses(
               "ml-2",
               stockLevel === "high" &&
                 "bg-green-50 text-green-700 border-green-200",

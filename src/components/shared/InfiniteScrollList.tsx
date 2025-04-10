@@ -2,7 +2,7 @@
 import React, { ReactNode } from "react";
 import { useInView } from "react-intersection-observer";
 import { Loader2 } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { mergeTailwindClasses } from "x-react/utils";
 
 interface InfiniteScrollListProps<T> {
   items: T[];
@@ -42,7 +42,7 @@ export function InfiniteScrollList<T>({
 
   return (
     <div
-      className={cn(
+      className={mergeTailwindClasses(
         "relative overflow-auto w-full pr-4",
         classNames?.container,
       )}

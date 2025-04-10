@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ProductModel } from "@/types/product";
 import { Star } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { mergeTailwindClasses } from "x-react/utils";
 
 interface RelatedProductCardProps {
   product: ProductModel;
@@ -120,7 +120,7 @@ const ProductRating = ({ rating }: { rating?: number }) => (
         {[...Array(5)].map((_, i) => (
           <Star
             key={i}
-            className={cn(
+            className={mergeTailwindClasses(
               "h-3 w-3",
               i < Math.floor(rating ?? 0)
                 ? "text-amber-400 fill-amber-400"

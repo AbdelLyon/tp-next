@@ -16,6 +16,7 @@ export interface ServerQueryProviderProps<TData> {
   children: ReactNode;
   fallback: ReactNode;
   isInfinite?: boolean;
+  staleTime?: number;
 }
 
 async function HydratedQueryContent<TData>({
@@ -62,6 +63,7 @@ export function ServerQueryProvider<TData>({
   children,
   fallback,
   isInfinite,
+  staleTime,
 }: ServerQueryProviderProps<TData>) {
   return (
     <Suspense fallback={fallback}>
@@ -70,6 +72,7 @@ export function ServerQueryProvider<TData>({
         queryFn={queryFn}
         initialPageParam={initialPageParam}
         isInfinite={isInfinite}
+        staleTime={staleTime}
       >
         {children}
       </HydratedQueryContent>
