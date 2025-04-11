@@ -27,7 +27,7 @@ const ProductDetailsPage = async () => {
   return (
     <Link
       href="/"
-      className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-gray-100 text-sm font-medium text-gray-700 hover:bg-gray-200 transition-colors duration-200 mb-6"
+      className="inline-flex items-center gap-2 px-4 p-3 border border-default-200 rounded-lg bg-content1 text-sm font-medium hover:opacity-80 transition-colors duration-200 mb-6"
     >
       <ArrowLeft size={14} strokeWidth={2.5} />
       <span>Back to products</span>

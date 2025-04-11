@@ -1,14 +1,15 @@
-// _hooks/useInfiniteProductsByCategory.tsx
-import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
+import {
+  useSuspenseInfiniteQuery,
+  useSuspenseQuery,
+} from "@tanstack/react-query";
 import { productService } from "@/services/ProductService";
 import { ProductModel } from "@/types/product";
 
-export const useInfiniteProductsByCategory = (category: string) => {
+export const useInfiniteProducts = () => {
   const query = useSuspenseInfiniteQuery({
-    queryKey: ["products", "category", category],
-
+    queryKey: ["products"],
     queryFn: ({ pageParam = 1 }) => {
-      return productService.getProductsByCategory(category, pageParam, 8);
+      return productService.getProducts({ page: pageParam });
     },
     initialPageParam: 1,
     getNextPageParam: (lastPage, allPages) => {
@@ -28,7 +29,7 @@ export const useInfiniteProductsByCategory = (category: string) => {
     },
   });
 
-  const productsByCategory =
+  const products =
     query.data?.pages &&
     Object.values(
       query.data.pages.reduce((accumulator, page) => {
@@ -42,10 +43,21 @@ export const useInfiniteProductsByCategory = (category: string) => {
     );
 
   return {
-    productsByCategory,
-    hasNextPageProductsByCategory: !!query.hasNextPage,
-    fetchNextPageProductsByCategory: query.fetchNextPage,
-    isFetchingNextPageProductsByCategory: query.isFetchingNextPage,
-    isFetchingProductByCategory: query.isFetching,
+    products,
+    hasNextPageProducts: !!query.hasNextPage,
+    fetchNextPageProducts: query.fetchNextPage,
+    isFetchingNextPageProducts: query.isFetchingNextPage,
+  };
+};
+
+export const useProduct = (productId: string | number) => {
+  const query = useSuspenseQuery({
+    queryKey: ["product", productId],
+    queryFn: () => productService.getProductById(productId),
+  });
+
+  return {
+    product: query.data,
+    error: query.error,
   };
 };

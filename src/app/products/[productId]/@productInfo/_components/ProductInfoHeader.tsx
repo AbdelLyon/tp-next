@@ -29,7 +29,7 @@ export const ProductInfoHeader = ({
       )}
 
       <h1
-        className="text-3xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-gray-800 to-gray-600"
+        className="text-3xl font-bold tracking-tight bg-clip-text text-transparent"
         data-testid="product-title"
       >
         {title}
@@ -54,7 +54,7 @@ export const ProductInfoHeader = ({
                 />
               );
             })}
-            <span className="text-sm ml-1.5 text-gray-600 font-medium">
+            <span className="text-sm ml-1.5 font-medium">
               {rating.toFixed(1)}
             </span>
           </div>

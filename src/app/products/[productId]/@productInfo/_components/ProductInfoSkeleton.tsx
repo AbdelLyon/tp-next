@@ -4,9 +4,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export const ProductInfoSkeleton = () => {
   return (
-    <div className="bg-white rounded-lg border shadow-sm overflow-hidden">
+    <div className="rounded-lg border border-default-200 shadow-sm overflow-hidden">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-6">
-        <div className="relative aspect-square rounded-lg overflow-hidden bg-gray-100">
+        <div className="relative aspect-square rounded-lg overflow-hidden bg-gray-50 dark:bg-content2">
           <Skeleton className="h-full w-full" />
           <div className="absolute top-3 left-3">
             <Skeleton className="h-6 w-16 rounded-full" />

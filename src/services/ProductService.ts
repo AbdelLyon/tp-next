@@ -10,7 +10,7 @@ class ProductService extends BaseService {
    }
 
    private async simulateLoadingTime() {
-      const loadingTime = Math.random() * 2000 + 1000;
+      const loadingTime = Math.random() * 300 + 200;
       console.log(`Simulating loading delay of ${loadingTime.toFixed(0)}ms`);
       await delay(loadingTime);
    }

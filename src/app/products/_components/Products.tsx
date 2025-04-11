@@ -1,6 +1,6 @@
 "use client";
+import { useInfiniteProducts } from "../_hooks/useQueryProduct";
 import { Product } from "./Product";
-import { useInfiniteProducts } from "../_hooks/useInfiniteProducts";
 import { InfiniteScrollList } from "@/components/shared/InfiniteScrollList";
 
 interface ProductsListProps {

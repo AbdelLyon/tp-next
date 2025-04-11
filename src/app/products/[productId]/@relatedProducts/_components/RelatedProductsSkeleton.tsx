@@ -4,7 +4,7 @@ import { Separator } from "@/components/ui/separator";
 
 export const RelatedProductsSkeleton = () => {
   return (
-    <div className="bg-white rounded-lg border shadow-sm p-6">
+    <div className="rounded-lg border shadow-sm p-6">
       <Skeleton className="h-7 w-48 mb-4" />
 
       <div className="space-y-4">
@@ -13,7 +13,7 @@ export const RelatedProductsSkeleton = () => {
           .map((_, index) => (
             <Card key={index} className="overflow-hidden">
               <div className="flex items-center gap-4 p-3">
-                <div className="relative h-16 w-16 flex-shrink-0 rounded-md overflow-hidden bg-gray-100">
+                <div className="relative h-16 w-16 flex-shrink-0 rounded-md overflow-hidden">
                   <Skeleton className="h-full w-full" />
                 </div>
 

@@ -1,35 +1,44 @@
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+"use client";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Card } from "x-react/card";
 
 export const ProductCardSkeleton = () => {
   return (
-    <Card className="h-full flex flex-col">
-      <CardHeader className="pb-1 pt-3 px-3">
-        <div className="flex justify-between items-start">
-          <Skeleton className="h-3 w-3/4" />
-          <Skeleton className="h-3 w-8 rounded-full" />
-        </div>
-      </CardHeader>
-
-      <div className="px-3 py-1">
-        <div className="size-40 mx-auto relative overflow-hidden rounded">
-          <Skeleton className="h-full w-full" />
-        </div>
+    <Card className="h-full flex flex-col overflow-hidden rounded-xl shadow-lg border border-default-200">
+      {/* Image container */}
+      <div className="bg-content2 rounded-t-lg w-full flex justify-center p-4">
+        <Skeleton className="size-[170px] rounded-full" />
       </div>
 
-      <CardContent className="py-2 px-3">
-        <Skeleton className="h-3 w-full mb-1" />
-        <Skeleton className="h-3 w-4/5" />
-        <Skeleton className="h-4 w-16 mt-2" />
-      </CardContent>
+      {/* Tags/Chips */}
+      <div className="flex justify-between w-full px-4 mt-4">
+        <Skeleton className="h-6 w-16 rounded-full" /> {/* Discount chip */}
+        <Skeleton className="h-6 w-14 rounded-full" /> {/* Rating chip */}
+      </div>
+
+      {/* Title */}
+      <div className="px-4 mt-4">
+        <Skeleton className="h-6 w-4/5" />
+      </div>
+
+      {/* Description */}
+      <div className="px-4 mt-4 flex-grow">
+        <Skeleton className="h-4 w-full mb-2" />
+        <Skeleton className="h-4 w-3/4" />
+      </div>
+
+      {/* Price section */}
+      <div className="mt-3 pt-3 px-4 flex justify-end border-t border-default-200 pb-4">
+        <Skeleton className="h-6 w-20" />
+      </div>
     </Card>
   );
 };
 
-export const ProductsSkeleton = () => {
+export const ProductsSkeleton = ({ columns = 4 }) => {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
-      {Array(6)
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      {Array(columns * 2)
         .fill(0)
         .map((_, index) => (
           <ProductCardSkeleton key={index} />

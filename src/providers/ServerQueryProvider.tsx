@@ -1,81 +1,23 @@
-// src/components/shared/ServerQueryProvider.tsx
-import { ReactNode, Suspense } from "react";
-import {
-  dehydrate,
-  HydrationBoundary,
-  QueryClient,
-  QueryFunction,
-  QueryKey,
-} from "@tanstack/react-query";
+import { ReactNode } from "react";
+import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
+import { getQueryClient } from "@/utils/getQueryClient";
 
-export interface ServerQueryProviderProps<TData> {
-  queryKey: QueryKey;
-  queryFn: QueryFunction<TData, QueryKey, number>;
-  initialPageParam?: number;
-  pageSize?: number;
+interface QueryDataProviderProps {
   children: ReactNode;
-  fallback: ReactNode;
-  isInfinite?: boolean;
-  staleTime?: number;
+  prefetchFn: (queryClient: ReturnType<typeof getQueryClient>) => Promise<void>;
 }
 
-async function HydratedQueryContent<TData>({
-  queryKey,
-  queryFn,
-  initialPageParam = 1,
+export const ServerQueryProvider = async ({
   children,
-  isInfinite = false,
-}: Omit<ServerQueryProviderProps<TData>, "fallback">) {
-  const queryClient = new QueryClient();
+  prefetchFn,
+}: QueryDataProviderProps) => {
+  const queryClient = getQueryClient();
 
-  if (isInfinite) {
-    await queryClient.prefetchInfiniteQuery({
-      queryKey,
-      queryFn,
-      initialPageParam,
-    });
-  } else {
-    await queryClient.prefetchQuery({
-      queryKey,
-      queryFn: ({ signal }) =>
-        queryFn({
-          pageParam: initialPageParam,
-          queryKey,
-          signal,
-          meta: undefined,
-          client: queryClient,
-          direction: "forward",
-        }),
-    });
-  }
+  await prefetchFn(queryClient);
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       {children}
     </HydrationBoundary>
   );
-}
-
-export function ServerQueryProvider<TData>({
-  queryKey,
-  queryFn,
-  initialPageParam,
-  children,
-  fallback,
-  isInfinite,
-  staleTime,
-}: ServerQueryProviderProps<TData>) {
-  return (
-    <Suspense fallback={fallback}>
-      <HydratedQueryContent
-        queryKey={queryKey}
-        queryFn={queryFn}
-        initialPageParam={initialPageParam}
-        isInfinite={isInfinite}
-        staleTime={staleTime}
-      >
-        {children}
-      </HydratedQueryContent>
-    </Suspense>
-  );
-}
+};

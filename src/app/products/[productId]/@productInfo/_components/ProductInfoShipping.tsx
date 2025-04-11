@@ -3,7 +3,7 @@ import { Truck, Shield, Package } from "lucide-react";
 export const ProductInfoShipping = () => {
   return (
     <div
-      className="mt-8 space-y-3 bg-gray-50 p-4 rounded-lg border border-gray-100"
+      className="mt-8 space-y-3 bg-content2 p-4 rounded-lg border border-default-200"
       data-testid="shipping-info"
     >
       <div className="flex items-center gap-3 text-sm">

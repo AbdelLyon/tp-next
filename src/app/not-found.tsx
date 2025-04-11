@@ -52,7 +52,7 @@ export const NotFound = () => {
             </Button>
             <Button
               variant="outline"
-              className="flex-1 border-gray-200"
+              className="flex-1 border-default-200"
               onClick={() => router.back()}
             >
               <ArrowLeft className="h-4 w-4 mr-2" />

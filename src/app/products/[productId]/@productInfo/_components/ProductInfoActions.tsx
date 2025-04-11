@@ -7,7 +7,7 @@ export const ProductInfoActions = () => {
     <div className="grid grid-cols-2 gap-4 mt-8" data-testid="product-actions">
       <Button
         size="lg"
-        className="font-medium bg-primary hover:bg-primary/90 shadow-sm hover:shadow transition-all duration-300 rounded-lg"
+        className="font-medium bg-primary hover:opacity-80 shadow-sm hover:shadow transition-all duration-300 rounded-lg"
         data-testid="add-to-cart-button"
         onClick={() => console.log("Add to cart button clicked")}
       >
@@ -17,7 +17,7 @@ export const ProductInfoActions = () => {
       <Button
         size="lg"
         variant="outline"
-        className="font-medium border-primary text-primary hover:bg-primary/5 transition-colors duration-300 rounded-lg"
+        className="font-medium border-primary text-primary hover:opacity-80 transition-colors duration-300 rounded-lg"
         data-testid="buy-now-button"
         onClick={() => console.log("Buy now button clicked")}
       >

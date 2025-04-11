@@ -1,19 +1,24 @@
-import { Suspense } from "react";
+import { PageContainer } from "@/components/shared/PageContainer";
+import { getQueryClient } from "@/utils/getQueryClient";
+import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { RelatedProducts } from "./_components/RelatedProducts";
 import { getProducts } from "@/app/cache/cacheProduct";
-import { RelatedProductsSkeleton } from "./_components/RelatedProductsSkeleton";
 
-const InitialProducts = async () => {
-  const productsData = await getProducts({ page: 1 });
-  return <RelatedProducts products={productsData.products} />;
-};
+const ProductsPage = async () => {
+  const queryClient = getQueryClient();
 
-const RelatedProductsPage = async () => {
+  const data = await getProducts({ page: 1 });
+
   return (
-    <Suspense fallback={<RelatedProductsSkeleton />}>
-      <InitialProducts />
-    </Suspense>
+    <PageContainer>
+      <HydrationBoundary state={dehydrate(queryClient)}>
+        <RelatedProducts
+          products={data.products}
+          className="grid grid-cols-1"
+        />
+      </HydrationBoundary>
+    </PageContainer>
   );
 };
 
-export default RelatedProductsPage;
+export default ProductsPage;

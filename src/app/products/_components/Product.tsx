@@ -29,7 +29,7 @@ export const Product = ({ product }: { product: ProductModel }) => {
           </div>
           <div className="flex justify-between w-full">
             {product.discountPercentage && (
-              <Chip className="bg-green-500 hover:bg-green-600 text-white font-medium px-2 py-1">
+              <Chip className="bg-green-500 hover:bg-green-600 font-medium px-2 py-1">
                 -{product.discountPercentage.toFixed(0)}%
               </Chip>
             )}

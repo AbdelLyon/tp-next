@@ -1,13 +1,7 @@
-import { Suspense } from "react";
-import { ProductInfoSkeleton } from "./_components/ProductInfoSkeleton";
-import ProductInfo from "./_components/ProductInfo";
 import { getProductById } from "@/app/cache/cacheProduct";
+import ProductInfo from "./_components/ProductInfo";
 import { PageContainer } from "@/components/shared/PageContainer";
-
-const InitialProductInfo = async ({ productId }: { productId: string }) => {
-  const product = await getProductById(productId);
-  return <ProductInfo product={product} />;
-};
+import { ServerQueryProvider } from "@/providers/ServerQueryProvider";
 
 const ProductInfoPage = async ({
   params,
@@ -18,9 +12,16 @@ const ProductInfoPage = async ({
 
   return (
     <PageContainer>
-      <Suspense fallback={<ProductInfoSkeleton />}>
-        <InitialProductInfo productId={productId} />
-      </Suspense>
+      <ServerQueryProvider
+        prefetchFn={async (queryClient) => {
+          await queryClient.prefetchQuery({
+            queryKey: ["product", productId],
+            queryFn: () => getProductById(productId),
+          });
+        }}
+      >
+        <ProductInfo productId={productId} />
+      </ServerQueryProvider>
     </PageContainer>
   );
 };

@@ -11,10 +11,7 @@ export const ProductInfoDetails = ({
 }: ProductInfoDetailsProps) => {
   return (
     <>
-      <p
-        className="text-gray-600 leading-relaxed"
-        data-testid="product-description"
-      >
+      <p className="leading-relaxed" data-testid="product-description">
         {description}
       </p>
 
@@ -24,7 +21,7 @@ export const ProductInfoDetails = ({
             <Badge
               key={tag}
               variant="secondary"
-              className="bg-gray-100 hover:bg-gray-200 text-gray-700 transition-colors"
+              className="bg-content2 hover:opacity-80 transition-colors"
             >
               {tag}
             </Badge>

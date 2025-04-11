@@ -22,7 +22,7 @@ export const RelatedProductCard = ({ product }: RelatedProductCardProps) => {
       className="block"
       data-testid={`related-product-${product.id}`}
     >
-      <Card className="overflow-hidden hover:shadow-lg transition-all duration-300 group border border-gray-100 hover:border-primary/20">
+      <Card className="overflow-hidden hover:shadow-lg transition-all duration-300 group border border-default-200 hover:border-primary/20">
         <div className="flex items-center gap-4 p-3">
           <ProductThumbnail
             thumbnail={product.thumbnail}
@@ -57,7 +57,7 @@ export const RelatedProductCard = ({ product }: RelatedProductCardProps) => {
 
               <Badge
                 variant="outline"
-                className="text-xs bg-primary/5 text-primary border-primary/10 group-hover:bg-primary/10 transition-colors duration-300"
+                className="text-xs bg-primary/5 text-primary border-default-200 group-hover:bg-primary/10 transition-colors duration-300"
                 data-testid="view-badge"
               >
                 View
@@ -80,7 +80,7 @@ const ProductThumbnail = ({
   discountPercentage?: number;
 }) => (
   <div
-    className="relative h-20 w-20 flex-shrink-0 rounded-md overflow-hidden bg-gray-50"
+    className="relative h-20 w-20 flex-shrink-0 rounded-md overflow-hidden bg-content-2"
     data-testid="product-thumbnail"
   >
     {thumbnail ? (
@@ -97,7 +97,7 @@ const ProductThumbnail = ({
     )}
     {discountPercentage && (
       <div
-        className="absolute top-0 right-0 bg-red-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-bl-md"
+        className="absolute top-0 right-0 bg-red-500 text-xs font-bold px-1.5 py-0.5 rounded-bl-md"
         data-testid="discount-badge"
       >
         -{discountPercentage.toFixed(0)}%
@@ -122,12 +122,12 @@ const ProductRating = ({ rating }: { rating?: number }) => (
                 ? "text-amber-400 fill-amber-400"
                 : i < rating
                 ? "text-amber-400 fill-amber-400 opacity-50"
-                : "text-gray-200",
+                : "",
             )}
             data-testid={`star-${i}`}
           />
         ))}
-        <span className="text-xs ml-1 text-gray-500">{rating.toFixed(1)}</span>
+        <span className="text-xs ml-1">{rating.toFixed(1)}</span>
       </div>
     )}
   </>
@@ -145,10 +145,7 @@ const ProductPrice = ({
       ${price.toFixed(2)}
     </span>
     {originalPrice && (
-      <span
-        className="text-xs text-gray-400 line-through"
-        data-testid="original-price"
-      >
+      <span className="text-xs line-through" data-testid="original-price">
         ${originalPrice.toFixed(2)}
       </span>
     )}

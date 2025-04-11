@@ -1,3 +1,4 @@
+"use client";
 import { ProductInfoGallery } from "./ProductInfoGallery";
 import { ProductInfoHeader } from "./ProductInfoHeader";
 import { ProductInfoPricing } from "./ProductInfoPricing";
@@ -5,9 +6,11 @@ import { ProductInfoDetails } from "./ProductInfoDetails";
 import { ProductInfoActions } from "./ProductInfoActions";
 import { ProductInfoShipping } from "./ProductInfoShipping";
 import { ProductInfoTabs } from "./ProductInfoTabs";
-import { ProductModel } from "@/types/product";
+import { useProduct } from "@/app/products/_hooks/useQueryProduct";
 
-const ProductInfo = ({ product }: { product: ProductModel }) => {
+const ProductInfo = ({ productId }: { productId: string }) => {
+  const { product } = useProduct(productId);
+
   const originalPrice = product.discountPercentage
     ? product.price * (1 + product.discountPercentage / 100)
     : 0;
