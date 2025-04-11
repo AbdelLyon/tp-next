@@ -1,4 +1,3 @@
-// RelatedProductCard.tsx
 import Image from "next/image";
 import Link from "next/link";
 import { Card } from "@/components/ui/card";
@@ -13,7 +12,6 @@ interface RelatedProductCardProps {
 }
 
 export const RelatedProductCard = ({ product }: RelatedProductCardProps) => {
-  // Calculer les données dérivées
   const originalPrice = product.discountPercentage
     ? product.price * (1 + product.discountPercentage / 100)
     : null;
@@ -34,7 +32,7 @@ export const RelatedProductCard = ({ product }: RelatedProductCardProps) => {
 
           <div className="flex-1 min-w-0">
             <h3
-              className="font-medium text-sm line-clamp-1 group-hover:text-primary transition-colors duration-300"
+              className="font-medium text-sm line-clamp-1"
               data-testid="product-title"
             >
               {product.title}
@@ -71,8 +69,6 @@ export const RelatedProductCard = ({ product }: RelatedProductCardProps) => {
     </Link>
   );
 };
-
-// Sous-composants pour plus de modularité
 
 const ProductThumbnail = ({
   thumbnail,

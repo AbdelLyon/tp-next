@@ -1,17 +1,17 @@
 import { Suspense } from "react";
-import RelatedProducts from "./_components/RelatedProducts";
-import { ProductInfoSkeleton } from "../@productInfo/_components/ProductInfoSkeleton";
+import { RelatedProducts } from "./_components/RelatedProducts";
+import { getProducts } from "@/app/cache/cacheProduct";
+import { RelatedProductsSkeleton } from "./_components/RelatedProductsSkeleton";
 
-const RelatedProductsPage = async ({
-  params,
-}: {
-  params: Promise<{ productId: string }>;
-}) => {
-  // "use cache";
-  const { productId } = await params;
+const InitialProducts = async () => {
+  const productsData = await getProducts({ page: 1 });
+  return <RelatedProducts products={productsData.products} />;
+};
+
+const RelatedProductsPage = async () => {
   return (
-    <Suspense fallback={<ProductInfoSkeleton />}>
-      <RelatedProducts productId={productId} />
+    <Suspense fallback={<RelatedProductsSkeleton />}>
+      <InitialProducts />
     </Suspense>
   );
 };

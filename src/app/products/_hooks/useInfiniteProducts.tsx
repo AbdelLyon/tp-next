@@ -7,7 +7,7 @@ export const useInfiniteProducts = () => {
   const query = useSuspenseInfiniteQuery({
     queryKey: ["products"],
     queryFn: ({ pageParam = 1 }) => {
-      return productService.getProducts(pageParam, 8);
+      return productService.getProducts({ page: pageParam });
     },
     initialPageParam: 1,
     getNextPageParam: (lastPage, allPages) => {

@@ -1,42 +1,29 @@
-import { productService } from "@/services/ProductService";
-import { ChevronRight } from "lucide-react";
-import { Separator } from "@/components/ui/separator";
+"use client";
+
+import { RelatedProductCard } from "./RelatedProductCard";
 import { ProductModel } from "@/types/product";
-import { RelatedProductsList } from "./RelatedProductsList";
-import { RelatedProductsHeader } from "./RelatedProductsHeader";
-import { RelatedtCategoryList } from "./RelatedtCategoryList";
 
-const RelatedProducts = async ({ productId }: { productId: string }) => {
-  async function getRelatedProductsData(
-    id: string,
-  ): Promise<Array<ProductModel>> {
-    const data = await productService.getProducts();
-    return data.products
-      .filter((product) => product.id !== Number(id))
-      .slice(0, 4);
-  }
+interface RelatedProductsProps {
+  products: ProductModel[];
+}
 
-  const relatedProducts = await getRelatedProductsData(productId);
-
+export const RelatedProducts = ({ products }: RelatedProductsProps) => {
   return (
     <>
-      <RelatedProductsHeader
-        title="You may also like"
-        actionLink="/products"
-        actionText="View all"
-        icon={<ChevronRight className="h-3 w-3" />}
-      />
-
-      <RelatedProductsList products={relatedProducts} />
-
-      <Separator className="my-6 bg-gradient-to-r from-transparent via-gray-200 to-transparent" />
-
-      <RelatedtCategoryList
-        title="Popular Categories"
-        categories={["Electronics", "Smartphones", "Laptops", "Beauty"]}
-      />
+      {products.length > 0 ? (
+        <div className="space-y-3" data-testid="related-products-list">
+          {products.map((product) => (
+            <RelatedProductCard key={product.id} product={product} />
+          ))}
+        </div>
+      ) : (
+        <div
+          className="text-center py-10 rounded-md bg-gray-50/50 border border-dashed border-gray-200"
+          data-testid="empty-products-message"
+        >
+          <p className="text-muted-foreground">No related products found</p>
+        </div>
+      )}
     </>
   );
 };
-
-export default RelatedProducts;

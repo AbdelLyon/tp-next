@@ -1,14 +1,23 @@
 import { CategoriesResponse, CategoriesResponseSchema, CategoryModel, ProductModel, ProductSchema, ProductsResponse, ProductsResponseSchema } from "@/types/product";
 import { BaseService } from "./BaseService";
 
+// Fonction utilitaire pour simuler un délai
+const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
 class ProductService extends BaseService {
    constructor () {
       super("https://dummyjson.com");
    }
 
+   private async simulateLoadingTime() {
+      const loadingTime = Math.random() * 2000 + 1000;
+      console.log(`Simulating loading delay of ${loadingTime.toFixed(0)}ms`);
+      await delay(loadingTime);
+   }
 
-   async getProducts(page: number = 1, limit: number = 8): Promise<ProductsResponse> {
+   async getProducts({ page = 1, limit = 8 }: { page: number, limit?: number; }): Promise<ProductsResponse> {
       try {
+         await this.simulateLoadingTime();
 
          const skip = (page - 1) * limit;
          const data = await this.get<ProductModel[]>(`/products?limit=${limit}&skip=${skip}`);
@@ -23,6 +32,7 @@ class ProductService extends BaseService {
 
    async getProductById(id: number | string): Promise<ProductModel> {
       try {
+         await this.simulateLoadingTime();
 
          const data = await this.get<ProductModel>(`/products/${id}`);
          return ProductSchema.parse(data);
@@ -36,6 +46,7 @@ class ProductService extends BaseService {
 
    async getProductsByCategory(category: string, page: number = 1, limit: number = 8): Promise<ProductsResponse> {
       try {
+         await this.simulateLoadingTime();
 
          const skip = (page - 1) * limit;
          const data = await this.get<ProductModel[]>(`/products/category/${encodeURIComponent(category)}?limit=${limit}&skip=${skip}`);
@@ -50,6 +61,7 @@ class ProductService extends BaseService {
 
    async getCategories(): Promise<CategoriesResponse> {
       try {
+         await this.simulateLoadingTime();
 
          const data = await this.get<CategoryModel[]>("/products/categories");
          return CategoriesResponseSchema.parse(data);

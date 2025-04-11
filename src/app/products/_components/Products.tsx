@@ -1,16 +1,13 @@
 "use client";
-
 import { Product } from "./Product";
 import { useInfiniteProducts } from "../_hooks/useInfiniteProducts";
 import { InfiniteScrollList } from "@/components/shared/InfiniteScrollList";
-import { Suspense } from "react";
-import { ProductsSkeleton } from "./ProductSkeleton";
 
 interface ProductsListProps {
   className?: string;
 }
 
-export function AllProducts({ className }: ProductsListProps) {
+export const Products = ({ className }: ProductsListProps) => {
   const {
     products,
     fetchNextPageProducts,
@@ -34,13 +31,5 @@ export function AllProducts({ className }: ProductsListProps) {
         style: { maxHeight: "calc(100vh - 200px)" },
       }}
     />
-  );
-}
-
-export const Products = ({ className }: ProductsListProps) => {
-  return (
-    <Suspense fallback={<ProductsSkeleton />}>
-      <AllProducts className={className} />
-    </Suspense>
   );
 };
