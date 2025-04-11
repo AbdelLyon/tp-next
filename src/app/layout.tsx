@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import "x-react/style.css";
 import "./globals.css";
 
 import { AppLayout } from "@/components/layout/AppLayout";
@@ -25,10 +26,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}
-        suppressHydrationWarning
+        cz-shortcut-listen="true"
       >
         <AppLayout>{children}</AppLayout>
       </body>

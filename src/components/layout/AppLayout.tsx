@@ -1,15 +1,20 @@
 "use client";
-import { QueryProvider } from "@/providers/QueryProvider";
+import { ClientQueryProvider } from "@/providers/ClientQueryProvider";
 import { Header } from "./header";
 import { Footer } from "./footer";
 import { PropsWithChildren } from "react";
+import { NextUIProvider, ThemeProvider } from "x-react/providers";
 
 export const AppLayout = ({ children }: PropsWithChildren) => {
   return (
-    <QueryProvider>
-      <Header />
-      <main className="flex-1">{children}</main>
-      <Footer />
-    </QueryProvider>
+    <ClientQueryProvider>
+      <NextUIProvider>
+        <ThemeProvider disableTransitionOnChange={true}>
+          <Header />
+          <main className="flex-1">{children}</main>
+          <Footer />
+        </ThemeProvider>
+      </NextUIProvider>
+    </ClientQueryProvider>
   );
 };

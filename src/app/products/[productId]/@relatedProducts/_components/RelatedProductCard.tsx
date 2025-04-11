@@ -1,4 +1,3 @@
-// RelatedProductCard.tsx
 import Image from "next/image";
 import Link from "next/link";
 import { Card } from "@/components/ui/card";
@@ -6,14 +5,13 @@ import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ProductModel } from "@/types/product";
 import { Star } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { mergeTailwindClasses } from "x-react/utils";
 
 interface RelatedProductCardProps {
   product: ProductModel;
 }
 
 export const RelatedProductCard = ({ product }: RelatedProductCardProps) => {
-  // Calculer les données dérivées
   const originalPrice = product.discountPercentage
     ? product.price * (1 + product.discountPercentage / 100)
     : null;
@@ -34,7 +32,7 @@ export const RelatedProductCard = ({ product }: RelatedProductCardProps) => {
 
           <div className="flex-1 min-w-0">
             <h3
-              className="font-medium text-sm line-clamp-1 group-hover:text-primary transition-colors duration-300"
+              className="font-medium text-sm line-clamp-1"
               data-testid="product-title"
             >
               {product.title}
@@ -71,8 +69,6 @@ export const RelatedProductCard = ({ product }: RelatedProductCardProps) => {
     </Link>
   );
 };
-
-// Sous-composants pour plus de modularité
 
 const ProductThumbnail = ({
   thumbnail,
@@ -120,7 +116,7 @@ const ProductRating = ({ rating }: { rating?: number }) => (
         {[...Array(5)].map((_, i) => (
           <Star
             key={i}
-            className={cn(
+            className={mergeTailwindClasses(
               "h-3 w-3",
               i < Math.floor(rating ?? 0)
                 ? "text-amber-400 fill-amber-400"

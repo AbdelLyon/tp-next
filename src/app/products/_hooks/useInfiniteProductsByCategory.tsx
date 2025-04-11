@@ -3,10 +3,7 @@ import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
 import { productService } from "@/services/ProductService";
 import { ProductModel } from "@/types/product";
 
-export const useInfiniteProductsByCategory = (
-  initialProducts: ProductModel[],
-  category: string,
-) => {
+export const useInfiniteProductsByCategory = (category: string) => {
   const query = useSuspenseInfiniteQuery({
     queryKey: ["products", "category", category],
 
@@ -29,33 +26,20 @@ export const useInfiniteProductsByCategory = (
         ? nextPage
         : undefined;
     },
-    initialData: {
-      pages: [
-        {
-          products: initialProducts,
-          total: initialProducts.length > 8 ? 100 : initialProducts.length,
-          skip: 0,
-          limit: 8,
-        },
-      ],
-      pageParams: [1],
-    },
-    // Désactiver le refetch initial si les données initiales sont disponibles
-    staleTime: initialProducts.length > 0 ? 60000 : 0, // 1 minute
   });
 
-  const productsByCategory = query.data?.pages
-    ? Object.values(
-        query.data.pages.reduce((accumulator, page) => {
-          return page.products.reduce((productMap, product) => {
-            return {
-              ...productMap,
-              [product.id]: product,
-            };
-          }, accumulator);
-        }, {} as Record<number, ProductModel>),
-      )
-    : initialProducts;
+  const productsByCategory =
+    query.data?.pages &&
+    Object.values(
+      query.data.pages.reduce((accumulator, page) => {
+        return page.products.reduce((productMap, product) => {
+          return {
+            ...productMap,
+            [product.id]: product,
+          };
+        }, accumulator);
+      }, {} as Record<number, ProductModel>),
+    );
 
   return {
     productsByCategory,

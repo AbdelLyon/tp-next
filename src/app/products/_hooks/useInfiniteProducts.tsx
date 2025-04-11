@@ -3,11 +3,11 @@ import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
 import { productService } from "@/services/ProductService";
 import { ProductModel } from "@/types/product";
 
-export const useInfiniteProducts = (initialProducts: ProductModel[]) => {
+export const useInfiniteProducts = () => {
   const query = useSuspenseInfiniteQuery({
-    queryKey: ["products", "infinite"],
+    queryKey: ["products"],
     queryFn: ({ pageParam = 1 }) => {
-      return productService.getProducts(pageParam, 8);
+      return productService.getProducts({ page: pageParam });
     },
     initialPageParam: 1,
     getNextPageParam: (lastPage, allPages) => {
@@ -25,33 +25,33 @@ export const useInfiniteProducts = (initialProducts: ProductModel[]) => {
         ? nextPage
         : undefined;
     },
-    initialData: {
-      pages: [
-        {
-          products: initialProducts,
-          total: initialProducts.length > 8 ? 100 : initialProducts.length,
-          skip: 0,
-          limit: 8,
-        },
-      ],
-      pageParams: [1],
-    },
+    // initialData: {
+    //   pages: [
+    //     {
+    //       products: initialProducts,
+    //       total: initialProducts.length > 8 ? 100 : initialProducts.length,
+    //       skip: 0,
+    //       limit: 8,
+    //     },
+    //   ],
+    // pageParams: [1],
+    // },
     // Désactiver le refetch initial si les données initiales sont disponibles
     // staleTime: initialProducts.length > 0 ? 60000 : 0, // 1 minute
   });
 
-  const products = query.data?.pages
-    ? Object.values(
-        query.data.pages.reduce((accumulator, page) => {
-          return page.products.reduce((productMap, product) => {
-            return {
-              ...productMap,
-              [product.id]: product,
-            };
-          }, accumulator);
-        }, {} as Record<number, ProductModel>),
-      )
-    : initialProducts;
+  const products =
+    query.data?.pages &&
+    Object.values(
+      query.data.pages.reduce((accumulator, page) => {
+        return page.products.reduce((productMap, product) => {
+          return {
+            ...productMap,
+            [product.id]: product,
+          };
+        }, accumulator);
+      }, {} as Record<number, ProductModel>),
+    );
 
   return {
     products,

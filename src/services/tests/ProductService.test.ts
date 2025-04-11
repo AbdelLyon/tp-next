@@ -1,19 +1,17 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { productService } from '../ProductService';
 
-// Mock global fetch
 const mockFetch = vi.fn();
 global.fetch = mockFetch;
 
 describe('ProductService', () => {
-   // Réinitialiser les mocks avant chaque test
    beforeEach(() => {
       mockFetch.mockReset();
+      vi.clearAllMocks();
    });
 
    describe('getProducts', () => {
-      it('should return products when API call is successful', async () => {
-         // Mock de données de réponse valides conformes au schéma
+      it('devrait retourner des produits avec pagination lorsque l\'appel API réussit', async () => {
          const mockResponse = {
             products: [
                {
@@ -31,9 +29,9 @@ describe('ProductService', () => {
                   tags: ['premium', 'smartphone']
                }
             ],
-            total: 1,
+            total: 100,
             skip: 0,
-            limit: 10
+            limit: 8
          };
 
          mockFetch.mockResolvedValueOnce({
@@ -41,37 +39,51 @@ describe('ProductService', () => {
             json: async () => mockResponse
          });
 
-         const result = await productService.getProducts();
+         const result = await productService.getProducts(1, 8);
 
-         // Vérifications
-         expect(mockFetch).toHaveBeenCalledWith('https://dummyjson.com/products');
-         expect(result).toEqual(mockResponse);
-         expect(result.products[0].title).toBe('iPhone 12');
-         expect(result.products[0].price).toBe(999);
+         expect(mockFetch).toHaveBeenCalledWith('https://dummyjson.com/products?limit=8&skip=0');
+         expect(result.products).toEqual(mockResponse.products);
+         expect(result.total).toBe(100);
+         expect(result.limit).toBe(8);
+         expect(result.skip).toBe(0);
       });
 
-      it('should throw error when API call fails', async () => {
-         // Mock pour simuler un échec d'API
+      it('devrait calculer le skip correctement pour différentes pages', async () => {
+         const mockResponse = {
+            products: [],
+            total: 100,
+            skip: 16,
+            limit: 8
+         };
+
+         mockFetch.mockResolvedValueOnce({
+            ok: true,
+            json: async () => mockResponse
+         });
+
+         await productService.getProducts(3, 8);
+
+         expect(mockFetch).toHaveBeenCalledWith('https://dummyjson.com/products?limit=8&skip=16');
+      });
+
+      it('devrait lancer une erreur lorsque l\'appel API échoue', async () => {
          mockFetch.mockResolvedValueOnce({
             ok: false,
             status: 500,
             statusText: 'Internal Server Error'
          });
 
-         // Vérification que la méthode lance bien une erreur
          await expect(productService.getProducts()).rejects.toThrow(
-            'Failed to fetch products: API request failed with status 500: Internal Server Error'
+            'Failed to fetch paginated products:'
          );
       });
 
-      it('should throw error when data validation fails', async () => {
-         // Mock de données de réponse invalides
+      it('devrait lancer une erreur lorsque la validation des données échoue', async () => {
          const invalidResponse = {
             products: [
                {
-                  // Manque id et d'autres champs obligatoires
                   title: 'iPhone 12',
-                  price: 'not a number' // Invalide, devrait être un nombre
+                  price: 'not a number'
                }
             ]
          };
@@ -81,19 +93,18 @@ describe('ProductService', () => {
             json: async () => invalidResponse
          });
 
-         // Pas besoin de mocker parse ici, on veut tester la validation réelle
-         await expect(productService.getProducts()).rejects.toThrow('Failed to fetch products:');
+         await expect(productService.getProducts()).rejects.toThrow('Failed to fetch paginated products:');
       });
 
-      it('should throw error when fetch fails with network error', async () => {
+      it('devrait lancer une erreur lorsque fetch échoue avec une erreur réseau', async () => {
          mockFetch.mockRejectedValueOnce(new Error('Network error'));
 
-         await expect(productService.getProducts()).rejects.toThrow('Failed to fetch products: Network error');
+         await expect(productService.getProducts()).rejects.toThrow('Failed to fetch paginated products: Network error');
       });
    });
 
    describe('getProductById', () => {
-      it('should return a product when API call is successful', async () => {
+      it('devrait retourner un produit lorsque l\'appel API réussit', async () => {
          const mockProduct = {
             id: 1,
             title: 'iPhone 12',
@@ -119,7 +130,7 @@ describe('ProductService', () => {
          expect(result.title).toBe('iPhone 12');
       });
 
-      it('should handle string IDs correctly', async () => {
+      it('devrait gérer correctement les ID sous forme de chaînes', async () => {
          const mockProduct = {
             id: 1,
             title: 'iPhone 12',
@@ -138,7 +149,7 @@ describe('ProductService', () => {
          expect(mockFetch).toHaveBeenCalledWith('https://dummyjson.com/products/1');
       });
 
-      it('should throw error when API call fails', async () => {
+      it('devrait lancer une erreur lorsque l\'appel API échoue', async () => {
          mockFetch.mockResolvedValueOnce({
             ok: false,
             status: 404,
@@ -146,16 +157,14 @@ describe('ProductService', () => {
          });
 
          await expect(productService.getProductById(999)).rejects.toThrow(
-            'Failed to fetch product with ID 999: API request failed with status 404: Not Found'
+            'Failed to fetch product with ID 999:'
          );
       });
 
-      it('should throw error when product data is invalid', async () => {
+      it('devrait lancer une erreur lorsque les données du produit sont invalides', async () => {
          const invalidProduct = {
-            // Manque des champs obligatoires
             id: 1,
             title: 'iPhone 12'
-            // Manque description, price, rating
          };
 
          mockFetch.mockResolvedValueOnce({
@@ -168,7 +177,7 @@ describe('ProductService', () => {
    });
 
    describe('getProductsByCategory', () => {
-      it('should return products when API call is successful', async () => {
+      it('devrait retourner des produits par catégorie avec pagination lorsque l\'appel API réussit', async () => {
          const mockResponse = {
             products: [
                {
@@ -180,9 +189,9 @@ describe('ProductService', () => {
                   category: 'smartphones'
                }
             ],
-            total: 1,
+            total: 10,
             skip: 0,
-            limit: 10
+            limit: 8
          };
 
          mockFetch.mockResolvedValueOnce({
@@ -190,14 +199,32 @@ describe('ProductService', () => {
             json: async () => mockResponse
          });
 
-         const result = await productService.getProductsByCategory('smartphones');
+         const result = await productService.getProductsByCategory('smartphones', 1, 8);
 
-         expect(mockFetch).toHaveBeenCalledWith('https://dummyjson.com/products/category/smartphones');
-         expect(result).toEqual(mockResponse);
-         expect(result.products[0].category).toBe('smartphones');
+         expect(mockFetch).toHaveBeenCalledWith('https://dummyjson.com/products/category/smartphones?limit=8&skip=0');
+         expect(result.products).toEqual(mockResponse.products);
+         expect(result.total).toBe(10);
       });
 
-      it('should URL encode category names with special characters', async () => {
+      it('devrait calculer le skip correctement pour différentes pages', async () => {
+         const mockResponse = {
+            products: [],
+            total: 20,
+            skip: 8,
+            limit: 8
+         };
+
+         mockFetch.mockResolvedValueOnce({
+            ok: true,
+            json: async () => mockResponse
+         });
+
+         await productService.getProductsByCategory('smartphones', 2, 8);
+
+         expect(mockFetch).toHaveBeenCalledWith('https://dummyjson.com/products/category/smartphones?limit=8&skip=8');
+      });
+
+      it('devrait encoder les noms de catégories avec des caractères spéciaux', async () => {
          const categoryWithSpaces = 'home decoration';
          const mockResponse = {
             products: [
@@ -210,9 +237,9 @@ describe('ProductService', () => {
                   category: 'home decoration'
                }
             ],
-            total: 1,
+            total: 10,
             skip: 0,
-            limit: 10
+            limit: 8
          };
 
          mockFetch.mockResolvedValueOnce({
@@ -220,29 +247,28 @@ describe('ProductService', () => {
             json: async () => mockResponse
          });
 
-         await productService.getProductsByCategory(categoryWithSpaces);
+         await productService.getProductsByCategory(categoryWithSpaces, 1, 8);
 
-         expect(mockFetch).toHaveBeenCalledWith('https://dummyjson.com/products/category/home%20decoration');
+         expect(mockFetch).toHaveBeenCalledWith('https://dummyjson.com/products/category/home%20decoration?limit=8&skip=0');
       });
 
-      it('should throw error when API call fails', async () => {
+      it('devrait lancer une erreur lorsque l\'appel API échoue', async () => {
          mockFetch.mockResolvedValueOnce({
             ok: false,
             status: 500,
             statusText: 'Internal Server Error'
          });
 
-         await expect(productService.getProductsByCategory('smartphones')).rejects.toThrow(
-            'Failed to fetch products in category "smartphones": API request failed with status 500: Internal Server Error'
+         await expect(productService.getProductsByCategory('smartphones', 1, 8)).rejects.toThrow(
+            'Failed to fetch products in category "smartphones":'
          );
       });
 
-      it('should throw error when products response is invalid', async () => {
+      it('devrait lancer une erreur lorsque la réponse des produits est invalide', async () => {
          const invalidResponse = {
             products: [
                {
                   id: 1,
-                  // Manque title, description et d'autres champs obligatoires
                   price: 999
                }
             ]
@@ -253,8 +279,53 @@ describe('ProductService', () => {
             json: async () => invalidResponse
          });
 
-         await expect(productService.getProductsByCategory('smartphones')).rejects.toThrow(
+         await expect(productService.getProductsByCategory('smartphones', 1, 8)).rejects.toThrow(
             'Failed to fetch products in category "smartphones":'
+         );
+      });
+   });
+
+   describe('getCategories', () => {
+      it('devrait retourner les catégories lorsque l\'appel API réussit', async () => {
+         const mockCategoriesResponse = [
+            { slug: "smartphones", name: "Smartphones", url: "https://example.com/smartphones" },
+            { slug: "laptops", name: "Laptops", url: "https://example.com/laptops" },
+            { slug: "fragrances", name: "Fragrances", url: "https://example.com/fragrances" }
+         ];
+
+         mockFetch.mockResolvedValueOnce({
+            ok: true,
+            json: async () => mockCategoriesResponse
+         });
+
+         const result = await productService.getCategories();
+
+         expect(mockFetch).toHaveBeenCalledWith('https://dummyjson.com/products/categories');
+         expect(result).toEqual(mockCategoriesResponse);
+      });
+
+      it('devrait lancer une erreur lorsque l\'appel API échoue', async () => {
+         mockFetch.mockResolvedValueOnce({
+            ok: false,
+            status: 500,
+            statusText: 'Internal Server Error'
+         });
+
+         await expect(productService.getCategories()).rejects.toThrow(
+            'Failed to fetch categories:'
+         );
+      });
+
+      it('devrait lancer une erreur lorsque la validation des données échoue', async () => {
+         const invalidData = "not an object";
+
+         mockFetch.mockResolvedValueOnce({
+            ok: true,
+            json: async () => invalidData
+         });
+
+         await expect(productService.getCategories()).rejects.toThrow(
+            'Failed to fetch categories:'
          );
       });
    });

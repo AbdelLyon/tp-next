@@ -1,57 +1,57 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import Image from "next/image";
 import { ProductModel } from "@/types/product";
 import Link from "next/link";
+import { Image } from "x-react/image";
+import { Card } from "x-react/card";
+import { Chip } from "x-react/chip";
 
 export const Product = ({ product }: { product: ProductModel }) => {
   return (
     <Link
       href={`/products/${product.id}`}
-      className="block h-full no-underline"
+      className="block h-full no-underline group"
     >
-      <Card className="h-full flex flex-col shadow-md hover:shadow-lg transition-all duration-200">
-        <CardHeader className="pb-1 pt-3 px-3">
-          <div className="flex justify-between items-start">
-            <CardTitle className="text-sm font-medium truncate">
-              {product.title}
-            </CardTitle>
+      <Card
+        className="h-full flex flex-col overflow-hidden rounded-xl shadow-lg transition-all duration-300 border border-default-200 hover:shadow-xl"
+        title={product.title}
+      >
+        <div className="flex flex-col flex-grow space-y-4">
+          <div className="bg-content2 rounded-t-lg w-full flex justify-center ">
+            <Image
+              src={product.thumbnail}
+              alt={product.title}
+              className="transition-transform duration-500 group-hover:scale-105"
+              width={170}
+              height={170}
+              radius="full"
+              loading="lazy"
+              sizes="200px"
+            />
+          </div>
+          <div className="flex justify-between w-full">
+            {product.discountPercentage && (
+              <Chip className="bg-green-500 hover:bg-green-600 text-white font-medium px-2 py-1">
+                -{product.discountPercentage.toFixed(0)}%
+              </Chip>
+            )}
             {product.rating && (
-              <Badge variant="outline" className="text-xs scale-90">
-                ★ {product.rating.toFixed(1)}
-              </Badge>
+              <Chip className="font-medium border border-default-200  ">
+                <span className="text-amber-500 mr-1">★</span>
+                {product.rating.toFixed(1)}
+              </Chip>
             )}
           </div>
-        </CardHeader>
+          <h2 className="text-lg font-semibold line-clamp-1 group-hover:text-primary mb-2 transition-colors duration-200">
+            {product.title}
+          </h2>
 
-        {product.thumbnail && (
-          <div className="px-3 py-1">
-            <div className="size-40 mx-auto relative overflow-hidden rounded">
-              <Image
-                src={product.thumbnail}
-                alt={product.title}
-                width={100}
-                height={100}
-                unoptimized={true}
-                className="object-cover w-full h-full"
-              />
-            </div>
-          </div>
-        )}
-
-        <CardContent className="py-2 px-3">
-          <p className="text-xs text-gray-700 line-clamp-2">
+          <p className="text-sm text-muted-foreground line-clamp-2 mt-2 flex-grow">
             {product.description}
           </p>
-          <p className="font-medium mt-2">
-            ${product.price.toFixed(2)}
-            {product.discountPercentage && (
-              <span className="ml-1 text-xs text-green-600">
-                -{product.discountPercentage.toFixed(0)}%
-              </span>
-            )}
-          </p>
-        </CardContent>
+
+          <div className="mt-3 pt-3 flex justify-end border-t border-default-200 ">
+            <p className="font-bold  text-lg">${product.price.toFixed(2)}</p>
+          </div>
+        </div>
       </Card>
     </Link>
   );

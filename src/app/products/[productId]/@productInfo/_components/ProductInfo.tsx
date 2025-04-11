@@ -1,4 +1,3 @@
-import { productService } from "@/services/ProductService";
 import { ProductInfoGallery } from "./ProductInfoGallery";
 import { ProductInfoHeader } from "./ProductInfoHeader";
 import { ProductInfoPricing } from "./ProductInfoPricing";
@@ -6,10 +5,9 @@ import { ProductInfoDetails } from "./ProductInfoDetails";
 import { ProductInfoActions } from "./ProductInfoActions";
 import { ProductInfoShipping } from "./ProductInfoShipping";
 import { ProductInfoTabs } from "./ProductInfoTabs";
+import { ProductModel } from "@/types/product";
 
-const ProductInfo = async ({ productId }: { productId: string }) => {
-  const product = await productService.getProductById(productId);
-
+const ProductInfo = ({ product }: { product: ProductModel }) => {
   const originalPrice = product.discountPercentage
     ? product.price * (1 + product.discountPercentage / 100)
     : 0;
