@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Heart } from "lucide-react";
+import { Button } from "x-react/button";
+import { IconHeart } from "x-react/icons";
 
 interface ProductInfoGalleryProps {
   thumbnail?: string;
@@ -16,7 +16,7 @@ export const ProductInfoGallery = ({
 }: ProductInfoGalleryProps) => {
   return (
     <div
-      className="relative aspect-square rounded-xl overflow-hidden group"
+      className="relative aspect-square rounded-xl overflow-hidden bg-background border border-border dark:bg-content1"
       data-testid="product-gallery"
     >
       {thumbnail && (
@@ -41,12 +41,12 @@ export const ProductInfoGallery = ({
       )}
 
       <Button
-        variant="secondary"
-        size="icon"
-        className="absolute top-3 right-3 rounded-full opacity-90 hover:opacity-100 border border-default-200 shadow-sm transition-all duration-300 hover:scale-110"
+        variant="light"
+        className="absolute top-3 right-3 size-10 rounded-full opacity-90 hover:opacity-100 border border-border shadow-sm transition-all duration-300 hover:scale-110"
         data-testid="favorite-button"
+        radius="full"
       >
-        <Heart className="h-4 w-4 text-primary" />
+        <IconHeart className="h-4 w-4 text-primary" />
       </Button>
     </div>
   );

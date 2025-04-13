@@ -21,7 +21,7 @@ export const ProductInfoDetails = ({
             <Badge
               key={tag}
               variant="secondary"
-              className="bg-content2 hover:opacity-80 transition-colors"
+              className=" bg-content1  hover:opacity-80 transition-colors"
             >
               {tag}
             </Badge>

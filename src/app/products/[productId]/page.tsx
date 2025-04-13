@@ -1,5 +1,6 @@
-import { productService } from "@/services/ProductService";
-import { ArrowLeft } from "lucide-react";
+import { getProductById } from "@/cache/cacheProduct";
+import { IconArrowLeft } from "x-react/icons";
+
 import Link from "next/link";
 
 export async function generateMetadata({
@@ -8,9 +9,7 @@ export async function generateMetadata({
   params: Promise<{ productId: string }>;
 }) {
   const resolvedParams = await params;
-  const product = await productService.getProductById(
-    Number(resolvedParams.productId),
-  );
+  const product = await getProductById(resolvedParams.productId);
 
   return {
     title: `${product.title} | Shop`,
@@ -27,9 +26,9 @@ const ProductDetailsPage = async () => {
   return (
     <Link
       href="/"
-      className="inline-flex items-center gap-2 px-4 p-3 border border-default-200 rounded-lg bg-content1 text-sm font-medium hover:opacity-80 transition-colors duration-200 mb-6"
+      className="inline-flex items-center gap-2 px-4 p-3 border border-border rounded-lg bg-content1 text-sm font-medium hover:opacity-80 transition-colors duration-200 mb-6"
     >
-      <ArrowLeft size={14} strokeWidth={2.5} />
+      <IconArrowLeft size={14} strokeWidth={2.5} />
       <span>Back to products</span>
     </Link>
   );

@@ -2,7 +2,7 @@ import { PageContainer } from "@/components/shared/PageContainer";
 import { getQueryClient } from "@/utils/getQueryClient";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { RelatedProducts } from "./_components/RelatedProducts";
-import { getProducts } from "@/app/cache/cacheProduct";
+import { getProducts } from "@/cache/cacheProduct";
 
 const ProductsPage = async () => {
   const queryClient = getQueryClient();

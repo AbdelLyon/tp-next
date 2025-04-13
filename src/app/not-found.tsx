@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import { ArrowLeft, Home } from "lucide-react";
+import { Button } from "x-react/button";
+import { IconHome, IconArrowLeft } from "x-react/icons";
 
 export const NotFound = () => {
   const router = useRouter();
@@ -44,18 +44,19 @@ export const NotFound = () => {
 
         <div className="space-y-4">
           <div className="flex flex-col sm:flex-row gap-4">
-            <Button asChild className="flex-1 bg-primary hover:bg-primary/90">
-              <Link href="/">
-                <Home className="h-4 w-4 mr-2" />
-                Retour à l&apos;accueil
-              </Link>
+            <Button
+              className="flex-1 bg-primary hover:bg-primary/90"
+              startContent={<IconHome className="h-4 w-4 mr-2" />}
+              onPress={() => router.push("/")}
+            >
+              <Link href="/">Retour à l&apos;accueil</Link>
             </Button>
             <Button
-              variant="outline"
-              className="flex-1 border-default-200"
-              onClick={() => router.back()}
+              variant="bordered"
+              className="flex-1 border-border"
+              onPress={() => router.back()}
+              startContent={<IconArrowLeft className="h-4 w-4 mr-2" />}
             >
-              <ArrowLeft className="h-4 w-4 mr-2" />
               Retour en arrière
             </Button>
           </div>

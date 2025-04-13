@@ -1,7 +1,8 @@
 // components/InfiniteScrollList.tsx
 import React, { ReactNode } from "react";
 import { useInView } from "react-intersection-observer";
-import { Loader2 } from "lucide-react";
+import { IconLoader2 } from "x-react/icons";
+
 import { mergeTailwindClasses } from "x-react/utils";
 
 interface InfiniteScrollListProps<T> {
@@ -58,7 +59,7 @@ export function InfiniteScrollList<T>({
 
       {/* Élément observé qui déclenche le chargement */}
       <div ref={ref} className="h-10 flex items-center justify-center my-4">
-        {isLoading && <Loader2 className="h-6 w-6 animate-spin" />}
+        {isLoading && <IconLoader2 className="h-6 w-6 animate-spin" />}
       </div>
 
       {!hasMore && items.length > 0 && (

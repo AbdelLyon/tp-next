@@ -12,7 +12,7 @@ export const Header = () => {
   };
 
   return (
-    <header className="sticky top-0 z-50 mb-10 w-full border-b shadow-md dark:shadow-none border-default-200 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background">
+    <header className="sticky top-0 z-50 mb-10 w-full border-b shadow-md dark:shadow-none border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background">
       <div className="container mx-auto flex h-16 items-center">
         <div className="mr-8">
           <Link href="/" className="flex items-center space-x-2">

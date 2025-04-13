@@ -13,7 +13,7 @@ export default function Layout({
     <PageContainer>
       {children}
       <div className="grid grid-cols-3 gap-10">
-        <div className="col-span-2 rounded-2xl border dark:bg-content2 border-default-200 shadow-sm overflow-hidden">
+        <div className="col-span-2 rounded-2xl border border-border shadow-sm overflow-hidden">
           {productInfo}
         </div>
         <div className="rounded-lg shadow-sm ">{relatedProducts}</div>

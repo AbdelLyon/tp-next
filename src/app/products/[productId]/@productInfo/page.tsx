@@ -1,4 +1,4 @@
-import { getProductById } from "@/app/cache/cacheProduct";
+import { getProductById } from "@/cache/cacheProduct";
 import ProductInfo from "./_components/ProductInfo";
 import { PageContainer } from "@/components/shared/PageContainer";
 import { ServerQueryProvider } from "@/providers/ServerQueryProvider";

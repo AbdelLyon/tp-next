@@ -10,14 +10,14 @@ class ProductService extends BaseService {
    }
 
    private async simulateLoadingTime() {
-      const loadingTime = Math.random() * 300 + 200;
+      const loadingTime = Math.random() * 30000 + 200;
       console.log(`Simulating loading delay of ${loadingTime.toFixed(0)}ms`);
       await delay(loadingTime);
    }
 
    async getProducts({ page = 1, limit = 8 }: { page: number, limit?: number; }): Promise<ProductsResponse> {
       try {
-         await this.simulateLoadingTime();
+         // await this.simulateLoadingTime();
 
          const skip = (page - 1) * limit;
          const data = await this.get<ProductModel[]>(`/products?limit=${limit}&skip=${skip}`);
@@ -32,7 +32,7 @@ class ProductService extends BaseService {
 
    async getProductById(id: number | string): Promise<ProductModel> {
       try {
-         await this.simulateLoadingTime();
+         // await this.simulateLoadingTime();
 
          const data = await this.get<ProductModel>(`/products/${id}`);
          return ProductSchema.parse(data);
@@ -46,7 +46,7 @@ class ProductService extends BaseService {
 
    async getProductsByCategory(category: string, page: number = 1, limit: number = 8): Promise<ProductsResponse> {
       try {
-         await this.simulateLoadingTime();
+         // await this.simulateLoadingTime();
 
          const skip = (page - 1) * limit;
          const data = await this.get<ProductModel[]>(`/products/category/${encodeURIComponent(category)}?limit=${limit}&skip=${skip}`);
@@ -61,7 +61,7 @@ class ProductService extends BaseService {
 
    async getCategories(): Promise<CategoriesResponse> {
       try {
-         await this.simulateLoadingTime();
+         // await this.simulateLoadingTime();
 
          const data = await this.get<CategoryModel[]>("/products/categories");
          return CategoriesResponseSchema.parse(data);

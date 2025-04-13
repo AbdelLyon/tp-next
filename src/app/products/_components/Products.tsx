@@ -16,20 +16,22 @@ export const Products = ({ className }: ProductsListProps) => {
   } = useInfiniteProducts();
 
   return (
-    <InfiniteScrollList
-      items={products}
-      onLoadMore={fetchNextPageProducts}
-      hasMore={!!hasNextPageProducts}
-      isLoading={isFetchingNextPageProducts}
-      classNames={{
-        list: className,
-        container: "w-full",
-      }}
-      keyExtractor={(product) => product.id}
-      renderItem={(product) => <Product product={product} />}
-      containerProps={{
-        style: { maxHeight: "calc(100vh - 200px)" },
-      }}
-    />
+    <div>
+      <InfiniteScrollList
+        items={products}
+        onLoadMore={fetchNextPageProducts}
+        hasMore={!!hasNextPageProducts}
+        isLoading={isFetchingNextPageProducts}
+        classNames={{
+          list: className,
+          container: "w-full",
+        }}
+        keyExtractor={(product) => product.id}
+        renderItem={(product) => <Product product={product} />}
+        containerProps={{
+          style: { maxHeight: "calc(100vh - 200px)" },
+        }}
+      />
+    </div>
   );
 };

@@ -1,4 +1,5 @@
 "use client";
+import { Button } from "x-react/button";
 
 export default function ErrorPage({
   error,
@@ -36,12 +37,12 @@ export default function ErrorPage({
         <p className="text-lg mb-8">Something went wrong.</p>
 
         {/* Bouton simple */}
-        <button
-          onClick={handleRetry}
-          className="px-6 py-2.5 bg-content2 h-10 w-30  my-z rounded-md hover:opacity-80 transition-colors duration-200 shadow-sm"
+        <Button
+          onPress={handleRetry}
+          className="px-6 py-2.5  bg-content1  h-10 w-30  my-z rounded-md hover:opacity-80 transition-colors duration-200 shadow-sm"
         >
           Try Again
-        </button>
+        </Button>
 
         {/* Message de support */}
         <p className="mt-6 text-sm">

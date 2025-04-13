@@ -27,7 +27,7 @@ export const ProductInfoPricing = ({
         )}
         {discountPercentage && originalPrice && (
           <span
-            className="text-sm text-green-600 font-semibold bg-content2 px-2 py-0.5 rounded"
+            className="text-sm text-green-600 font-semibold  bg-content1  px-2 py-0.5 rounded"
             data-testid="savings"
           >
             Save ${(originalPrice - price).toFixed(2)}

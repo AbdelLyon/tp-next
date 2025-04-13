@@ -1,17 +1,25 @@
 import { PageContainer } from "@/components/shared/PageContainer";
 import { Products } from "./_components/Products";
 import { ServerQueryProvider } from "@/providers/ServerQueryProvider";
-import { getProducts } from "../cache/cacheProduct";
+import { getProducts } from "../../cache/cacheProduct";
+import { authService } from "@/services/auth";
 
 export default function ProductsPage() {
   return (
     <PageContainer>
+      <button
+        onClick={async () => {
+          "use server";
+          authService.logout();
+        }}
+      >
+        ok
+      </button>
       <ServerQueryProvider
         prefetchFn={async (queryClient) => {
           await queryClient.prefetchInfiniteQuery({
             queryKey: ["products"],
-            queryFn: (context) =>
-              getProducts({ page: context.pageParam as number }),
+            queryFn: (context) => getProducts({ page: context.pageParam }),
             initialPageParam: 1,
           });
         }}

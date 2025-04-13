@@ -22,7 +22,7 @@ export const RelatedProductCard = ({ product }: RelatedProductCardProps) => {
       className="block"
       data-testid={`related-product-${product.id}`}
     >
-      <Card className="overflow-hidden hover:shadow-lg transition-all duration-300 group border border-default-200 hover:border-primary/20">
+      <Card className="overflow-hidden hover:shadow-lg transition-all duration-300 group border border-border bg-content1 hover:border-primary/20">
         <div className="flex items-center gap-4 p-3">
           <ProductThumbnail
             thumbnail={product.thumbnail}
@@ -57,7 +57,7 @@ export const RelatedProductCard = ({ product }: RelatedProductCardProps) => {
 
               <Badge
                 variant="outline"
-                className="text-xs bg-primary/5 text-primary border-default-200 group-hover:bg-primary/10 transition-colors duration-300"
+                className="text-xs bg-primary/5 text-primary border-border group-hover:bg-primary/10 transition-colors duration-300"
                 data-testid="view-badge"
               >
                 View

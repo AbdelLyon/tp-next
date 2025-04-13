@@ -11,11 +11,11 @@ export const Product = ({ product }: { product: ProductModel }) => {
       className="block h-full no-underline group"
     >
       <Card
-        className="h-full flex flex-col overflow-hidden rounded-xl shadow-lg transition-all duration-300 border border-default-200 hover:shadow-xl"
+        className="h-full flex flex-col overflow-hidden rounded-xl shadow-lg transition-all duration-300 border border-border hover:shadow-xl"
         title={product.title}
       >
         <div className="flex flex-col flex-grow space-y-4">
-          <div className="bg-content2 rounded-t-lg w-full flex justify-center ">
+          <div className=" bg-content1  rounded-t-lg w-full flex justify-center ">
             <Image
               src={product.thumbnail}
               alt={product.title}
@@ -34,7 +34,7 @@ export const Product = ({ product }: { product: ProductModel }) => {
               </Chip>
             )}
             {product.rating && (
-              <Chip className="font-medium border border-default-200  ">
+              <Chip className="font-medium border border-border  ">
                 <span className="text-amber-500 mr-1">★</span>
                 {product.rating.toFixed(1)}
               </Chip>
@@ -48,7 +48,7 @@ export const Product = ({ product }: { product: ProductModel }) => {
             {product.description}
           </p>
 
-          <div className="mt-3 pt-3 flex justify-end border-t border-default-200 ">
+          <div className="mt-3 pt-3 flex justify-end border-t border-border ">
             <p className="font-bold  text-lg">${product.price.toFixed(2)}</p>
           </div>
         </div>

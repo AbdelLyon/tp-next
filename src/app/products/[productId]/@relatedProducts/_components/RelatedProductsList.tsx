@@ -17,7 +17,7 @@ export const RelatedProductsList = ({ products }: RelatedProductsListProps) => {
         </div>
       ) : (
         <div
-          className="text-center py-10 rounded-md  border border-dashed border-default-200"
+          className="text-center py-10 rounded-md  border border-dashed border-border"
           data-testid="empty-products-message"
         >
           <p className="text-muted-foreground">No related products found</p>

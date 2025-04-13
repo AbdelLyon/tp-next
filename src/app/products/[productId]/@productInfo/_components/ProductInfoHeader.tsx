@@ -1,5 +1,6 @@
 import { Badge } from "@/components/ui/badge";
-import { Star, Check } from "lucide-react";
+import { IconStar, IconCheck } from "x-react/icons";
+
 import { mergeTailwindClasses } from "x-react/utils";
 
 interface ProductInfoHeaderProps {
@@ -41,7 +42,7 @@ export const ProductInfoHeader = ({
             {[...Array(5)].map((_, i) => {
               const difference = rating - i;
               return (
-                <Star
+                <IconStar
                   key={i}
                   className={mergeTailwindClasses(
                     "h-4 w-4",
@@ -76,7 +77,7 @@ export const ProductInfoHeader = ({
           >
             {stockLevel === "high" ? (
               <>
-                <Check className="inline-block h-3 w-3 mr-1" /> In stock
+                <IconCheck className="inline-block h-3 w-3 mr-1" /> In stock
               </>
             ) : stockLevel === "medium" ? (
               `In Stock (${stock})`
