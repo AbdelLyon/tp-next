@@ -20,7 +20,6 @@ const httpConfig: HttpConfig = {
    }
 };
 
-// 6. Initialiser le client HTTP
 HttpClient.init({ httpConfig, instanceName: "auth" });
 
 

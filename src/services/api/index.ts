@@ -1,44 +1,31 @@
-import { HttpClient, HttpConfig, ModelAttributes, MutationRequest, RelationDefinition } from "rest-api-client";
+import { HttpClient, HttpConfig, MutationRequest, RelationDefinition } from "rest-api-client";
 import { ProductQuery } from "./products/ProductQuery";
 import { requestInterceptors, responseErrorInterceptors, responseSuccessInterceptors } from "./interceptors";
 import { ProductMutatin } from "./products/ProductMutation";
+import { Site, User, Client, Contact, Department } from "@/models";
 
-// Définition des attributs de chaque entité
-interface UserAttributes extends ModelAttributes {
-   email: string;
-   username: string;
-   roles: string;
+type UserAttributes = Pick<User, 'firstname' | 'lastname' | 'email'>;
+interface RolesAttributes {
+   name: "Admin" | "Manager" | "Comercial";
 }
-
-interface ApplicationAttributes extends ModelAttributes {
-   domain: string;
-   name: string;
-   id: string;
-}
-
-interface ProfileAttributes extends ModelAttributes {
-   id: string;
-   role: string;
-}
-
-interface ClientAttributes extends ModelAttributes {
-   name: string;
-   age: number;
-
-}
+type SiteAttributes = Omit<Site, 'id'>;
+type ClientAttributes = Omit<Client, 'id'>;
+type ContactAttributes = Omit<Contact, 'id' | 'client_id'>;
+type DepartmentAttributes = Omit<Department, 'id' | 'site_id'>;
 
 
-// Relations application avec client imbriqué
-interface ApplicationRelations extends Record<string, unknown> {
-   client: RelationDefinition<ClientAttributes, Record<string, unknown>>;
-   profiles: RelationDefinition<ProfileAttributes, Record<string, unknown>>;
-
-}
-
-// Relations utilisateur avec applications et profils imbriqués
-interface UserRelations extends Record<string, unknown> {
-   applications: RelationDefinition<ApplicationAttributes, ApplicationRelations>;
-   profiles: RelationDefinition<ProfileAttributes, Record<string, unknown>>;
+interface UserRelations {
+   client: RelationDefinition<ClientAttributes> & {
+      relations?: {
+         site: RelationDefinition<SiteAttributes> & {
+            relations?: {
+               departments: RelationDefinition<DepartmentAttributes> | Array<RelationDefinition<DepartmentAttributes>>;
+            };
+         };
+         contacts: RelationDefinition<ContactAttributes> | Array<RelationDefinition<ContactAttributes>>;
+      };
+   };
+   roles: RelationDefinition<RolesAttributes>;
 }
 
 const httpConfig: HttpConfig = {
@@ -58,49 +45,66 @@ const httpConfig: HttpConfig = {
    }
 };
 
-// Initialiser le client HTTP
 HttpClient.init({ httpConfig, instanceName: "api" });
 
-// Exporter le service qui utilise le client HTTP
-export const productQueryService = new ProductQuery();
-export const productMutationService = new ProductMutatin();
 
-// Création de la requête de mutation - version corrigée
+
 const mutationRequest: MutationRequest<UserAttributes, UserRelations> = {
    mutate: [{
-      operation: "create",
+      operation: "update",
+      key: "mlkds",
       attributes: {
          email: "test@gmail.com",
-         username: 'name',
-         roles: "Admin"
+         firstname: 'majax',
+         lastname: "abdel",
       },
       relations: {
-         applications: {
-            operation: "create",
+         client: {
+            operation: "update",
+            key: "smdlk",
             attributes: {
-               domain: 'domain',
-               id: "lkj",
-               name: "appp"
+               addresse: "123 Rue du Commerce",
+               name: "Entreprise ABC"
             },
             relations: {
-               client: {
-                  operation: "create",
-                  attributes: { age: 34, name: "client" }
+               site: {
+                  operation: "update",
+                  key: "mmsdlk",
+
+                  attributes: {
+                     name: "Siège social"
+                  },
+                  relations: {
+                     departments: {
+                        operation: "detach",
+                        key: "lmqksd",
+                     }
+                  }
                },
-               profiles: {
-                  operation: "attach",
-                  key: "8"
-               }
+               contacts:
+               {
+                  operation: "update",
+                  key: "mlskd",
+                  attributes: {
+                     firstname: "Jean",
+                     lastname: "Dupont",
+                     email: "jean.dupont@entrepriseabc.com",
+                     position: "Directeur Commercial",
+                  }
+               },
             }
          },
-         profiles: {
-            operation: "create",
-            attributes: { id: "lsk", role: "mqslkm" }
-
+         roles: {
+            operation: "update",
+            key: "msdk",
+            attributes: {
+               name: "Comercial"
+            }
          }
       }
    }]
 };
 
-// Exécution de la mutation
+export const productQueryService = new ProductQuery();
+export const productMutationService = new ProductMutatin();
 productMutationService.mutate(mutationRequest);
