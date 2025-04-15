@@ -4,11 +4,11 @@ import { z } from "zod";
 
 
 // Schéma Zod pour l'utilisateur
-const UserSchema = z.object({
+export const UserSchema = z.object({
    id: z.string(),
    username: z.string(),
    email: z.string().email(),
-   roles: z.array(z.string()).optional(),
+   roles: z.enum(["Admin", "Manager", "Users"]),
 });
 
 const AuthTokensSchema = z.object({

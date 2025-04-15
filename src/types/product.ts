@@ -37,3 +37,7 @@ export const CategorySchema = z.object({
 export type CategoryModel = z.infer<typeof CategorySchema>;
 export const CategoriesResponseSchema = z.array(CategorySchema);
 export type CategoriesResponse = z.infer<typeof CategoriesResponseSchema>;
+
+
+
+
