@@ -1,110 +1,63 @@
-import { HttpClient, HttpConfig, MutationRequest, RelationDefinition } from "rest-api-client";
-import { ProductQuery } from "./products/ProductQuery";
-import { requestInterceptors, responseErrorInterceptors, responseSuccessInterceptors } from "./interceptors";
-import { ProductMutatin } from "./products/ProductMutation";
-import { Site, User, Client, Contact, Department } from "@/models";
-
-type UserAttributes = Pick<User, 'firstname' | 'lastname' | 'email'>;
-interface RolesAttributes {
-   name: "Admin" | "Manager" | "Comercial";
-}
-type SiteAttributes = Omit<Site, 'id'>;
-type ClientAttributes = Omit<Client, 'id'>;
-type ContactAttributes = Omit<Contact, 'id' | 'client_id'>;
-type DepartmentAttributes = Omit<Department, 'id' | 'site_id'>;
+import { UserQuery } from "./users/UserQuery";
+import { UserMutatin } from "./users/UserMutation";
+import { Client, Department, Role, Site, User } from "@/models";
+import { ApiService } from "./ApiService";
 
 
-interface UserRelations {
-   client: RelationDefinition<ClientAttributes> & {
-      relations?: {
-         site: RelationDefinition<SiteAttributes> & {
-            relations?: {
-               departments: RelationDefinition<DepartmentAttributes> | Array<RelationDefinition<DepartmentAttributes>>;
-            };
-         };
-         contacts: RelationDefinition<ContactAttributes> | Array<RelationDefinition<ContactAttributes>>;
-      };
-   };
-   roles: RelationDefinition<RolesAttributes>;
-}
+// Initialisation de l'API au premier import de ce module
+ApiService.initialize();
 
-const httpConfig: HttpConfig = {
-   baseURL: "https://dummyjson.com",
-   timeout: 10000,
-   headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-   },
-   maxRetries: 2,
-   interceptors: {
-      request: requestInterceptors,
-      response: {
-         success: responseSuccessInterceptors,
-         error: responseErrorInterceptors
-      }
-   }
-};
+export const userQueryService = new UserQuery();
+export const userMutationService = new UserMutatin();
 
-HttpClient.init({ httpConfig, instanceName: "api" });
+// Récupération des détails de configuration pour les utilisateurs
+export const details = userQueryService.details();
 
+// Exemple de recherche d'utilisateurs sans filtres (retourne tous les utilisateurs)
+export const search = userQueryService.search({});
 
+// Exemple de suppression d'un utilisateur par son ID
+userMutationService.delete({
+   resources: ['USR-12345']
+});
 
-const mutationRequest: MutationRequest<UserAttributes, UserRelations> = {
-   mutate: [{
-      operation: "update",
-      key: "mlkds",
-      attributes: {
-         email: "test@gmail.com",
-         firstname: 'majax',
-         lastname: "abdel",
-      },
-      relations: {
-         client: {
-            operation: "update",
-            key: "smdlk",
-            attributes: {
-               addresse: "123 Rue du Commerce",
-               name: "Entreprise ABC"
-            },
-            relations: {
-               site: {
-                  operation: "update",
-                  key: "mmsdlk",
+/**
+* Exemple de création d'un utilisateur avec relations complexes
+* Cette requête crée un utilisateur complet avec toutes ses relations associées
+* en une seule opération de mutation
+*/
+export const mutationRequest = userMutationService.entityBuilder()
+   .createEntity<User, 'department' | 'client' | 'roles'>({
+      firstname: "Alice",
+      lastname: "Smith",
+      email: "alice.smith@example.com",
+      phone_number: "+33612345678",
+      id: "USR-54321",
 
-                  attributes: {
-                     name: "Siège social"
-                  },
-                  relations: {
-                     departments: {
-                        operation: "detach",
-                        key: "lmqksd",
-                     }
-                  }
-               },
-               contacts:
-               {
-                  operation: "update",
-                  key: "mlskd",
-                  attributes: {
-                     firstname: "Jean",
-                     lastname: "Dupont",
-                     email: "jean.dupont@entrepriseabc.com",
-                     position: "Directeur Commercial",
-                  }
-               },
-            }
-         },
-         roles: {
-            operation: "update",
-            key: "msdk",
-            attributes: {
-               name: "Comercial"
-            }
-         }
-      }
-   }]
-};
+      // Relation avec le département
+      department: userMutationService.relationBuilder().createRelation<Department>({
+         code: "IT-DEV",
+         id: "DEP-789",
+         name: "Développement",
+         site_id: "SITE-001",
+      }),
 
-export const productQueryService = new ProductQuery();
-export const productMutationService = new ProductMutatin();
-productMutationService.mutate(mutationRequest);
+      // Relation avec le client qui contient lui-même une relation avec un site
+      client: userMutationService.relationBuilder().createRelation<Client, 'site'>({
+         addresse: "42 rue des Serveurs, 69000 Lyon",
+         id: "CLI-456",
+         name: "TechSolutions SAS",
+
+         // Relation imbriquée avec le site
+         site: userMutationService.relationBuilder().createRelation<Site>({
+            id: 'SITE-123',
+            name: 'Siège Social Lyon'
+         })
+      }),
+
+      // Relation avec les rôles de l'utilisateur
+      roles: userMutationService.relationBuilder().createRelation<Role>({
+         name: "Manager",
+         id: "2"
+      })
+   }).mutate(); // Exécution immédiate de la mutation

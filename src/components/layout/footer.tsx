@@ -1,6 +1,9 @@
+import { mutationRequest } from "@/services/api";
 import Link from "next/link";
 
 export const Footer = () => {
+  console.log({ mutationRequest });
+
   return (
     <footer className="border border-t  bg-content1  border-border mt-10">
       <div className="container py-12 md:py-16 mx-auto">

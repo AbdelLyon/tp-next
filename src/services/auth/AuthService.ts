@@ -1,6 +1,7 @@
-import { Auth, RequestConfig } from "rest-api-client";
+import { Auth } from "rest-api-client/auth";
 import Cookies from "js-cookie";
 import { z } from "zod";
+import { RequestConfig } from "rest-api-client/http";
 
 
 // Schéma Zod pour l'utilisateur
@@ -59,6 +60,7 @@ export class AuthService extends Auth<User, LoginCredentials, RegisterData, Auth
          registerData: RegisterSchema,
          tokens: AuthTokensSchema
       });
+
    }
 
    // Override de la méthode login pour stocker les tokens et l'utilisateur

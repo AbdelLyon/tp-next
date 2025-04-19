@@ -1,4 +1,4 @@
-import { HttpClient, HttpConfig } from "rest-api-client";
+import { HttpClient, HttpConfig } from "rest-api-client/http";
 
 import { AuthService } from "./AuthService";
 import { authResponseErrorInterceptor, authResponseSuccessInterceptor } from "./interceptors";
