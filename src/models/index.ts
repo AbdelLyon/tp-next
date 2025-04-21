@@ -32,7 +32,6 @@ export const DepartmentSchema = z.object({
    id: z.string().uuid(),
    name: z.string(),
    code: z.string(),
-   site_id: z.string(),
 });
 
 export const UserSchema = z.object({
